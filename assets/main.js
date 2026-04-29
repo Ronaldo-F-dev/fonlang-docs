@@ -138,8 +138,8 @@ function renderSidebar(root) {
       <a href="${r}examples/index.html">Galerie d'exemples</a>
     </nav>
     <div class="sidebar-footer">
-      Par <strong style="color:#f1f5f9">AWADEME Finanfa Ronaldo</strong><br>
-      Projet FonLang — Bénin &amp; Togo
+      Documentation rédigée par <strong style="color:#f1f5f9">AWADEME Finanfa Ronaldo</strong><br>
+      FonLang — projet communautaire porté par sa communauté
     </div>
   `;
 
