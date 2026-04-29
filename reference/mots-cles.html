@@ -221,8 +221,45 @@ xlɛ(double(21))   // 42</code></pre>
               <td>Référence à l'instance courante (this/self)</td>
               <td><code>nyɛ.age = nyɛ.age + 1</code></td>
             </tr>
+            <tr>
+              <td><code>gu</code></td><td>« hériter de »</td>
+              <td>Héritage — la classe enfant hérite des champs et méthodes du parent</td>
+              <td><code>zɛn Chien gu Animal { ... }</code></td>
+            </tr>
+            <tr>
+              <td><code>mεjitɔ</code></td><td>« père / parent »</td>
+              <td>Référence à la classe parente depuis une méthode (super)</td>
+              <td><code>mεjitɔ.saluer()</code></td>
+            </tr>
+            <tr>
+              <td><code>ma_ɖyɔ</code></td><td>« fixé / de classe »</td>
+              <td>Méthode statique — appelée sur la classe, pas sur une instance</td>
+              <td><code>ma_ɖyɔ azɔwanu carre(x) { lɛkɔ x*x }</code></td>
+            </tr>
           </tbody>
         </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Animal {
+    jo nom = "inconnu"
+    azɔwanu saluer() { xlɛ("Je suis", nyɛ.nom) }
+}
+
+zɛn Chien gu Animal {
+    jo race = "labrador"
+
+    azɔwanu saluer() {
+        mεjitɔ.saluer()          // appel méthode parente
+        xlɛ("Race :", nyɛ.race)
+    }
+
+    ma_ɖyɔ azɔwanu espece() { lɛkɔ "Canis lupus familiaris" }
+}
+
+jo rex = nu Chien()
+rex.saluer()
+xlɛ(Chien.espece())   // méthode statique</code></pre>
       </div>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
