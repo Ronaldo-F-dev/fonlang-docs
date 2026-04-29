@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Démarrage rapide — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Démarrage rapide
+      </div>
+    </div>
+    <article>
+      <h1>Démarrage rapide</h1>
+      <p class="page-subtitle">Installez FonLang et écrivez votre premier programme en quelques minutes.</p>
+
+      <h2>Installation</h2>
+      <h3>Prérequis</h3>
+      <ul>
+        <li>Go 1.21 ou supérieur</li>
+        <li>Git</li>
+      </ul>
+
+      <h3>Compiler depuis les sources</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code class="language-bash">git clone https://github.com/fonlang/fonlang
+cd fonlang
+go build -o fonlang ./cmd/fonlang</code></pre>
+      </div>
+
+      <h2>Premier programme</h2>
+      <p>Créez un fichier <code>bonjour.fon</code> :</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>xlɛ("Mì wá dó, monde !")
+
+jo nom = "Akɔ"
+jo age  = 25
+
+enyi (age >= 18) {
+    xlɛ(nom + " est majeur·e")
+} alo {
+    xlɛ(nom + " est mineur·e")
+}</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code class="language-bash">./fonlang bonjour.fon
+# Mì wá dó, monde !
+# Akɔ est majeur·e</code></pre>
+      </div>
+
+      <h2>Le REPL interactif</h2>
+      <p>Sans argument, <code>fonlang</code> démarre un REPL évaluant le code en temps réel :</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code class="language-bash">./fonlang
+# FonLang 0.1.0-alpha — REPL interactif
+
+fon> jo x = 10
+=> 10
+fon> x * x
+=> 100
+fon> xlɛ("résultat : " + x)
+résultat : 10</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Astuce</strong>
+        Les blocs multi-lignes sont reconnus automatiquement : saisissez une ligne avec <code>{</code>,
+        puis continuez sur les lignes suivantes — le REPL attend la fermeture <code>}</code> avant
+        d'évaluer.
+      </div>
+
+      <h2>Structure d'un programme</h2>
+      <p>Un programme FonLang est une séquence d'instructions. Les points-virgules sont facultatifs entre
+      lignes séparées, obligatoires pour plusieurs instructions sur une même ligne.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Commentaire sur une ligne
+
+jo a = 1           // déclaration
+jo b = 2
+xlɛ(a + b)         // affiche 3
+
+jo x = 10; jo y = 20; xlɛ(x + y)   // plusieurs sur une ligne</code></pre>
+      </div>
+
+      <h2>Conventions de code</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Convention</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td>Variables en camelCase</td><td><code>jo monNombre = 42</code></td></tr>
+            <tr><td>Fonctions en camelCase</td><td><code>azɔwanu calculerSomme(a, b) {}</code></td></tr>
+            <tr><td>Commentaires avec <code>//</code></td><td><code>// ceci est un commentaire</code></td></tr>
+            <tr><td>Extension de fichier</td><td><code>.fon</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a href="../index.html">
+          <span class="nav-dir">&larr; Précédent</span>
+          <span class="nav-title">Accueil</span>
+        </a>
+        <a href="controle.html" class="next">
+          <span class="nav-dir">Suivant &rarr;</span>
+          <span class="nav-title">Structures de contrôle</span>
+        </a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

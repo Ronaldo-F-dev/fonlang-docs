@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opérateurs — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Référence<span>/</span>Opérateurs
+      </div>
+    </div>
+    <article>
+      <h1>Opérateurs</h1>
+      <p class="page-subtitle">Arithmétiques, logiques, comparaison, bit à bit et priorités.</p>
+
+      <h2>Arithmétiques</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Opérateur</th><th>Nom</th><th>Exemple</th><th>Résultat</th></tr></thead>
+          <tbody>
+            <tr><td><code>+</code></td><td>Addition / Concaténation</td><td><code>3 + 4</code> / <code>"a" + "b"</code></td><td><code>7</code> / <code>"ab"</code></td></tr>
+            <tr><td><code>-</code></td><td>Soustraction</td><td><code>10 - 3</code></td><td><code>7</code></td></tr>
+            <tr><td><code>*</code></td><td>Multiplication</td><td><code>4 * 5</code></td><td><code>20</code></td></tr>
+            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 4</code></td><td><code>2</code> (entière) / <code>2.5</code> (float)</td></tr>
+            <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td><td><code>1</code></td></tr>
+            <tr><td><code>++</code></td><td>Incrément</td><td><code>i++</code></td><td><code>i = i + 1</code></td></tr>
+            <tr><td><code>--</code></td><td>Décrément</td><td><code>i--</code></td><td><code>i = i - 1</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>xlɛ(10 + 3)     // 13
+xlɛ(10 - 3)     // 7
+xlɛ(10 * 3)     // 30
+xlɛ(10 / 3)     // 3        (division entière)
+xlɛ(10.0 / 3)   // 3.3333…  (flottant)
+xlɛ(10 % 3)     // 1
+
+jo i = 5
+i++
+xlɛ(i)   // 6</code></pre>
+      </div>
+
+      <h2>Comparaison</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Opérateur</th><th>Signification</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>Égalité</td><td><code>x == 42</code></td></tr>
+            <tr><td><code>!=</code></td><td>Différence</td><td><code>x != 0</code></td></tr>
+            <tr><td><code>&lt;</code></td><td>Inférieur strict</td><td><code>a &lt; b</code></td></tr>
+            <tr><td><code>&gt;</code></td><td>Supérieur strict</td><td><code>a &gt; b</code></td></tr>
+            <tr><td><code>&lt;=</code></td><td>Inférieur ou égal</td><td><code>a &lt;= b</code></td></tr>
+            <tr><td><code>&gt;=</code></td><td>Supérieur ou égal</td><td><code>a &gt;= b</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Logiques</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Opérateur</th><th>Alias Fon</th><th>Signification</th><th>Court-circuit</th></tr></thead>
+          <tbody>
+            <tr><td><code>&amp;&amp;</code></td><td><code>kpodo</code></td><td>ET logique</td><td>Oui — évalue le droit seulement si gauche est vrai</td></tr>
+            <tr><td><code>||</code></td><td><code>abi</code></td><td>OU logique</td><td>Oui — évalue le droit seulement si gauche est faux</td></tr>
+            <tr><td><code>!</code></td><td>—</td><td>NON logique</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>xlɛ(nugbo && nuvu)    // nuvu
+xlɛ(nuvu || nugbo)    // nugbo
+xlɛ(!nugbo)           // nuvu
+
+// Formes Fon équivalentes
+xlɛ(nugbo kpodo nuvu) // nuvu
+xlɛ(nuvu abi nugbo)   // nugbo</code></pre>
+      </div>
+
+      <h2>Bit à bit</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Opérateur</th><th>Signification</th><th>Exemple</th><th>Résultat</th></tr></thead>
+          <tbody>
+            <tr><td><code>^</code></td><td>XOR bit à bit</td><td><code>5 ^ 3</code></td><td><code>6</code></td></tr>
+            <tr><td><code>&lt;&lt;</code></td><td>Décalage gauche</td><td><code>1 &lt;&lt; 4</code></td><td><code>16</code></td></tr>
+            <tr><td><code>&gt;&gt;</code></td><td>Décalage droit</td><td><code>64 &gt;&gt; 2</code></td><td><code>16</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>xlɛ(5 ^ 3)     // 6   (101 XOR 011 = 110)
+xlɛ(1 << 4)    // 16
+xlɛ(64 >> 2)   // 16</code></pre>
+      </div>
+
+      <h2>Assignation</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Opérateur</th><th>Rôle</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><code>jo x =</code></td><td>Déclaration + assignation initiale</td><td><code>jo x = 42</code></td></tr>
+            <tr><td><code>x =</code></td><td>Réassignation (variable existante)</td><td><code>x = x + 1</code></td></tr>
+            <tr><td><code>x++</code></td><td>Incrément (sucre syntaxique)</td><td>équivaut à <code>x = x + 1</code></td></tr>
+            <tr><td><code>x--</code></td><td>Décrément (sucre syntaxique)</td><td>équivaut à <code>x = x - 1</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Priorité des opérateurs</h2>
+      <p>Du plus faible au plus fort :</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Niveau</th><th>Opérateurs</th></tr></thead>
+          <tbody>
+            <tr><td>1 (plus faible)</td><td><em>Base</em></td></tr>
+            <tr><td>2</td><td><code>||</code> <code>abi</code></td></tr>
+            <tr><td>3</td><td><code>&amp;&amp;</code> <code>kpodo</code></td></tr>
+            <tr><td>4</td><td><code>==</code> <code>!=</code></td></tr>
+            <tr><td>5</td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td></tr>
+            <tr><td>6</td><td><code>+</code> <code>-</code> <code>^</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code></td></tr>
+            <tr><td>7</td><td><code>*</code> <code>/</code> <code>%</code></td></tr>
+            <tr><td>8</td><td><code>-x</code> <code>!x</code> (préfixe)</td></tr>
+            <tr><td>9</td><td><code>f(args)</code> (appel)</td></tr>
+            <tr><td>10 (plus fort)</td><td><code>arr[i]</code> (index)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Utiliser des parenthèses pour clarifier
+xlɛ(2 + 3 * 4)      // 14  (*, puis +)
+xlɛ((2 + 3) * 4)    // 20
+
+xlɛ(!nugbo || nuvu)  // nuvu  (! en premier, || en dernier)</code></pre>
+      </div>
+
+      <div class="page-nav">
+        <a href="types.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Types de données</span></a>
+        <a href="stdlib.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Stdlib — référence</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

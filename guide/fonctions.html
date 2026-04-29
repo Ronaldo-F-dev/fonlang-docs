@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fonctions — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Fonctions
+      </div>
+    </div>
+    <article>
+      <h1>Fonctions</h1>
+      <p class="page-subtitle">Fonctions nommées, anonymes, variadiques et closures.</p>
+
+      <h2>Déclaration — <span class="kw">azɔwanu</span></h2>
+      <p>Le mot <strong>azɔwanu</strong> signifie « travailleur » / « celui qui fait » en Fon.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu additionner(a, b) {
+    lɛkɔ a + b
+}
+
+xlɛ(additionner(3, 4))   // 7</code></pre>
+      </div>
+
+      <h2>Retour de valeur — <span class="kw">lɛkɔ</span></h2>
+      <p><strong>lɛkɔ</strong> signifie « retourner » en Fon. La valeur de la dernière expression d'un bloc est implicitement retournée si <code>lɛkɔ</code> est absent.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu max(a, b) {
+    enyi (a > b) { lɛkɔ a }
+    alo          { lɛkɔ b }
+}
+
+xlɛ(max(10, 7))   // 10</code></pre>
+      </div>
+
+      <h2>Récursion</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu factorielle(n) {
+    enyi (n == 0) { lɛkɔ 1 }
+    alo { lɛkɔ n * factorielle(n - 1) }
+}
+
+xlɛ(factorielle(6))   // 720
+
+azɔwanu fib(n) {
+    enyi (n <= 1) { lɛkɔ n }
+    alo { lɛkɔ fib(n - 1) + fib(n - 2) }
+}
+
+xlɛ(fib(10))   // 55</code></pre>
+      </div>
+
+      <h2>Fonctions anonymes (lambda)</h2>
+      <p>Une fonction sans nom peut être stockée dans une variable ou passée en argument.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo double = azɔwanu(x) { lɛkɔ x * 2 }
+xlɛ(double(21))   // 42
+
+jo carre = azɔwanu(x) { lɛkɔ x * x }
+xlɛ(carre(9))     // 81</code></pre>
+      </div>
+
+      <h2>Closures</h2>
+      <p>Les fonctions capturent leur environnement lexical.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu creerCompteur() {
+    jo compte = 0
+    lɛkɔ azɔwanu() {
+        compte++
+        lɛkɔ compte
+    }
+}
+
+jo c = creerCompteur()
+xlɛ(c())   // 1
+xlɛ(c())   // 2
+xlɛ(c())   // 3</code></pre>
+      </div>
+
+      <h2>Fonctions variadiques</h2>
+      <p>Le paramètre <code>...rest</code> collecte tous les arguments supplémentaires dans un tableau.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu somme(...nombres) {
+    jo total = 0
+    sin (n ɖo nombres) {
+        total = total + n
+    }
+    lɛkɔ total
+}
+
+xlɛ(somme(1, 2, 3, 4, 5))   // 15
+xlɛ(somme(10, 20))           // 30</code></pre>
+      </div>
+
+      <h2>Fonctions d'ordre supérieur</h2>
+      <p>Les fonctions peuvent être passées en argument et retournées.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Applique fn sur chaque élément du tableau
+azɔwanu appliquer(arr, fn) {
+    jo resultat = []
+    sin (x ɖo arr) {
+        resultat = gɔna(resultat, fn(x))
+    }
+    lɛkɔ resultat
+}
+
+jo nums = [1, 2, 3, 4, 5]
+jo doubles = appliquer(nums, azɔwanu(x) { lɛkɔ x * 2 })
+xlɛ(doubles)   // [2, 4, 6, 8, 10]</code></pre>
+      </div>
+
+      <div class="page-nav">
+        <a href="controle.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Structures de contrôle</span></a>
+        <a href="collections.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Collections</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

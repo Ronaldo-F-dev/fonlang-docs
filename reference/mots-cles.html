@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mots-clés — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Référence<span>/</span>Mots-clés
+      </div>
+    </div>
+    <article>
+      <h1>Mots-clés</h1>
+      <p class="page-subtitle">
+        Tous les mots-clés réservés de FonLang, avec leur signification en Fon et leur rôle dans le langage.
+      </p>
+
+      <div class="callout callout-info">
+        <strong>Convention</strong>
+        Les mots-clés FonLang ne contiennent <strong>pas d'accent tonique</strong> (les tons sont présents
+        dans la langue orale Fon mais omis dans les identifiants du langage pour simplifier la saisie).
+      </div>
+
+      <h2>Instructions et déclarations</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Rôle</th><th>Exemple</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>jo</code></td>
+              <td>« je » / « poser »</td>
+              <td>Déclaration de variable</td>
+              <td><code>jo x = 42</code></td>
+            </tr>
+            <tr>
+              <td><code>azɔwanu</code></td>
+              <td>« travailleur »</td>
+              <td>Définition de fonction</td>
+              <td><code>azɔwanu f(x) { lɛkɔ x }</code></td>
+            </tr>
+            <tr>
+              <td><code>lɛkɔ</code></td>
+              <td>« retourner »</td>
+              <td>Retour de valeur</td>
+              <td><code>lɛkɔ n * 2</code></td>
+            </tr>
+            <tr>
+              <td><code>xlɛ</code></td>
+              <td>« dire / afficher »</td>
+              <td>Afficher sur la sortie standard</td>
+              <td><code>xlɛ("bonjour")</code></td>
+            </tr>
+            <tr>
+              <td><code>xlɛf</code></td>
+              <td>« dire formaté »</td>
+              <td>Affichage formaté (printf)</td>
+              <td><code>xlɛf("%d\n", 42)</code></td>
+            </tr>
+            <tr>
+              <td><code>xa</code></td>
+              <td>« lire / entendre »</td>
+              <td>Lire une ligne sur l'entrée standard</td>
+              <td><code>jo s = xa()</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Structures de contrôle</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>enyi</code></td><td>« si »</td><td>Condition if — aussi case dans bɔdewu</td></tr>
+            <tr><td><code>alo</code></td><td>« sinon / ou »</td><td>Branche else / default dans bɔdewu</td></tr>
+            <tr><td><code>sin</code></td><td>« aller / traverser »</td><td>Boucle for classique ou for-in</td></tr>
+            <tr><td><code>ɖo</code></td><td>« dans »</td><td>Opérateur for-in : <code>sin (x ɖo arr)</code></td></tr>
+            <tr><td><code>hwenue</code></td><td>« pendant que »</td><td>Boucle while</td></tr>
+            <tr><td><code>blo</code></td><td>« faire »</td><td>Boucle do-while</td></tr>
+            <tr><td><code>bɔdewu</code></td><td>« selon »</td><td>Switch / branchement multiple</td></tr>
+            <tr><td><code>nɔte</code></td><td>« arrêter »</td><td>Break — interrompt la boucle</td></tr>
+            <tr><td><code>gbɔ</code></td><td>« sortir »</td><td>Break (alias de nɔte)</td></tr>
+            <tr><td><code>dɔte</code></td><td>« quitter »</td><td>Break (alias de nɔte)</td></tr>
+            <tr><td><code>yinukɔn</code></td><td>« continuer »</td><td>Continue — passe à l'itération suivante</td></tr>
+            <tr><td><code>blokpɔn</code></td><td>« essayer »</td><td>Bloc try — gestion d'erreurs</td></tr>
+            <tr><td><code>wli</code></td><td>« attraper »</td><td>Bloc catch — traite l'exception</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Gestion d'erreurs</h2>
+      <p>
+        Le bloc <code>wli</code> ne prend pas de paramètre. À l'intérieur, la variable
+        <code>gbogbe</code> est automatiquement liée au message d'erreur (type <code>wekwin</code>).
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td><code>blokpɔn</code></td><td>« essayer »</td><td>Bloc try</td></tr>
+            <tr><td><code>wli</code></td><td>« attraper »</td><td>Bloc catch</td></tr>
+            <tr><td><code>gbogbe</code></td><td>« exception »</td><td>Variable auto-injectée dans <code>wli</code> — contient le message d'erreur</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>blokpɔn {
+    jo rep = http_get("https://api.exemple.com")
+    xlɛ(rep["corps"])
+} wli {
+    xlɛ("Erreur :", gbogbe)
+}</code></pre>
+      </div>
+
+      <h2>Modules</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Rôle</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>kplawa</code></td>
+              <td>« apporter »</td>
+              <td>Charge et exécute un fichier <code>.fon</code> dans la portée courante</td>
+              <td><code>kplawa "utils.fon"</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Dans utils.fon
+azɔwanu double(x) { lɛkɔ x * 2 }
+
+// Dans main.fon
+kplawa "utils.fon"
+xlɛ(double(21))   // 42</code></pre>
+      </div>
+
+      <h2>Valeurs littérales</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Valeur</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>nugbo</code></td><td>« vrai »</td><td>Booléen true</td></tr>
+            <tr><td><code>nuvu</code></td><td>« faux »</td><td>Booléen false</td></tr>
+            <tr><td><code>vɔ</code></td><td>« vide »</td><td>Null</td></tr>
+            <tr><td><code>vɔtɔ</code></td><td>« le vide »</td><td>Null (alias de vɔ)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Types de données</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Type</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>kɛn</code></td><td>« nombre »</td><td>Nombre entier ou flottant — aussi fonction de conversion</td></tr>
+            <tr><td><code>wekwin</code></td><td>« parole / mot »</td><td>Chaîne de caractères — aussi fonction de conversion</td></tr>
+            <tr><td><code>wemawlanxwlɛ</code></td><td>« liste de choses »</td><td>Tableau (array)</td></tr>
+            <tr><td><code>tablo</code></td><td>(emprunté)</td><td>Tableau — alias de wemawlanxwlɛ</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Opérateurs logiques textuels</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Équivalent</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>kpodo</code></td><td>« et »</td><td><code>&amp;&amp;</code> — ET logique (court-circuit)</td></tr>
+            <tr><td><code>abi</code></td><td>« ou »</td><td><code>||</code> — OU logique (court-circuit)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Programmation orientée objet (OOP)</h2>
+      <p>Les classes et instances sont pleinement implémentées en FonLang.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Rôle</th><th>Exemple</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>zɛn</code></td><td>« groupe / famille »</td>
+              <td>Définir une classe</td>
+              <td><code>zɛn Animal { ... }</code></td>
+            </tr>
+            <tr>
+              <td><code>nu</code></td><td>« enfant / issu de »</td>
+              <td>Instancier un objet</td>
+              <td><code>jo chien = nu Animal("Rex", 3)</code></td>
+            </tr>
+            <tr>
+              <td><code>sun</code></td><td>« commencer »</td>
+              <td>Constructeur de classe</td>
+              <td><code>sun(n, a) { nyɛ.nom = n }</code></td>
+            </tr>
+            <tr>
+              <td><code>nyɛ</code></td><td>« moi / soi-même »</td>
+              <td>Référence à l'instance courante (this/self)</td>
+              <td><code>nyɛ.age = nyɛ.age + 1</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Compteur {
+    jo valeur = 0
+
+    sun(debut) {
+        nyɛ.valeur = debut
+    }
+
+    azɔwanu incrementer() {
+        nyɛ.valeur = nyɛ.valeur + 1
+    }
+
+    azɔwanu afficher() {
+        xlɛ("Compteur :", nyɛ.valeur)
+    }
+}
+
+jo c = nu Compteur(10)
+c.incrementer()
+c.incrementer()
+c.afficher()   // Compteur : 12</code></pre>
+      </div>
+
+      <h2>Mots-clés réservés (modificateurs d'accès)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification (Fon)</th><th>Futur rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>mɛɖesunɔtɔn</code></td><td>« caché »</td><td>Modificateur privé</td></tr>
+            <tr><td><code>mɛbitɔn</code></td><td>« public »</td><td>Modificateur public</td></tr>
+            <tr><td><code>cyɔnalɔji</code></td><td>« protégé »</td><td>Modificateur protégé</td></tr>
+            <tr><td><code>ɖyɔ</code></td><td>« poser »</td><td>Setter</td></tr>
+            <tr><td><code>zewa</code></td><td>« prendre »</td><td>Getter</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a href="../guide/stdlib.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Bibliothèques standard</span></a>
+        <a href="types.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Types de données</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

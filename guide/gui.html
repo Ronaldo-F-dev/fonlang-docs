@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interface graphique — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Interface graphique
+      </div>
+    </div>
+    <article>
+      <h1>Interface graphique (flɛsɛ)</h1>
+      <p class="page-subtitle">
+        Créez des fenêtres, dessinez des formes et gérez les entrées clavier/souris directement
+        depuis FonLang grâce au moteur <strong>Ebiten</strong>.
+      </p>
+
+      <div class="callout callout-info">
+        <strong>flɛsɛ</strong> signifie « fenêtre » en Fon.
+        Le mot-clé <code>hun_flɛtɛli</code> veut dire « ouvrir la fenêtre » et
+        <code>flɛtɛli_boucle</code> veut dire « boucle de la fenêtre ».
+      </div>
+
+      <!-- Hello World GUI -->
+      <h2>Hello World graphique</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>hun_flɛtɛli("Mì wá dó", 800, 600)   // ouvrir la fenêtre 800×600
+
+azɔwanu mise_a_jour() {
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+}
+
+azɔwanu dessin() {
+    flɛ_couleur(30, 30, 30)                          // fond sombre
+    flɛ_signon("Mì wá dó !", 300, 280, 255, 255, 255) // texte blanc
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)  // démarrer (bloquant)</code></pre>
+      </div>
+
+      <!-- Fenêtre -->
+      <h2>Gestion de la fenêtre</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Fonction</th><th>Arguments</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>hun_flɛtɛli(titre, w, h)</code></td>
+              <td>wekwin, kɛn, kɛn</td>
+              <td>Initialise la fenêtre (titre, largeur, hauteur). À appeler avant tout.</td>
+            </tr>
+            <tr>
+              <td><code>su_flɛtɛli()</code></td>
+              <td>—</td>
+              <td>Ferme la fenêtre et arrête la boucle.</td>
+            </tr>
+            <tr>
+              <td><code>flɛtɛli_boucle(fn_update, fn_draw)</code></td>
+              <td>azɔwanu, azɔwanu</td>
+              <td>Démarre le game loop. <strong>Bloquant</strong> — appel terminal du programme.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dessin -->
+      <h2>Fonctions de dessin</h2>
+      <p>Les fonctions de dessin ne s'exécutent correctement qu'à l'intérieur du callback <code>fn_draw</code>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Fonction</th><th>Arguments</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ_couleur(r, g, b)</code></td>
+              <td>kɛn×3</td>
+              <td>Efface l'écran avec une couleur unie (RVB 0–255). Appelée en premier dans draw.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ_xwe(x, y, w, h, r, g, b)</code></td>
+              <td>kɛn×7</td>
+              <td>Dessine un rectangle plein à (x, y), taille w×h, couleur RVB.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ_kpo(x, y, rayon, r, g, b)</code></td>
+              <td>kɛn×6</td>
+              <td>Dessine un cercle plein centré en (x, y) de rayon donné.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ_ligne(x1, y1, x2, y2, r, g, b)</code></td>
+              <td>kɛn×7</td>
+              <td>Dessine une ligne entre (x1, y1) et (x2, y2).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ_signon(texte, x, y, r, g, b)</code></td>
+              <td>wekwin, kɛn×5</td>
+              <td>Affiche du texte à la position (x, y) avec la couleur RVB.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu dessin() {
+    flɛ_couleur(0, 0, 0)                        // fond noir
+    flɛ_xwe(50, 50, 200, 100, 255, 0, 0)        // rectangle rouge
+    flɛ_kpo(400, 300, 60, 0, 200, 255)          // cercle cyan
+    flɛ_ligne(0, 0, 800, 600, 255, 255, 0)      // diagonale jaune
+    flɛ_signon("Score : 42", 20, 20, 255, 255, 255)
+}</code></pre>
+      </div>
+
+      <!-- Entrées -->
+      <h2>Clavier et souris</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Fonction</th><th>Retour</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ_touche(nom)</code></td>
+              <td>nugbo/nuvu</td>
+              <td>Retourne vrai si la touche nommée est enfoncée à cette frame.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ_souris()</code></td>
+              <td>map {x, y}</td>
+              <td>Position courante du curseur en pixels.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ_souris_clic()</code></td>
+              <td>nugbo/nuvu</td>
+              <td>Vrai si le bouton gauche de la souris est enfoncé.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Noms de touches reconnus</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nom FonLang</th><th>Touche</th></tr></thead>
+          <tbody>
+            <tr><td><code>"espace"</code></td><td>Barre espace</td></tr>
+            <tr><td><code>"entree"</code></td><td>Entrée</td></tr>
+            <tr><td><code>"echap"</code></td><td>Échap</td></tr>
+            <tr><td><code>"maj"</code></td><td>Majuscule (Shift)</td></tr>
+            <tr><td><code>"gauche"</code> / <code>"droite"</code> / <code>"haut"</code> / <code>"bas"</code></td><td>Flèches directionnelles</td></tr>
+            <tr><td><code>"a"</code> – <code>"z"</code></td><td>Lettres</td></tr>
+            <tr><td><code>"0"</code> – <code>"9"</code></td><td>Chiffres</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu mise_a_jour() {
+    enyi (flɛ_touche("gauche"))  { jo x = x - 4 }
+    enyi (flɛ_touche("droite"))  { jo x = x + 4 }
+    enyi (flɛ_touche("haut"))    { jo y = y - 4 }
+    enyi (flɛ_touche("bas"))     { jo y = y + 4 }
+    enyi (flɛ_touche("echap"))   { su_flɛtɛli() }
+
+    jo souris = flɛ_souris()
+    enyi (flɛ_souris_clic()) {
+        xlɛ("Clic en", souris["x"], souris["y"])
+    }
+}</code></pre>
+      </div>
+
+      <!-- Exemple complet -->
+      <h2>Exemple complet — balle rebondissante</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>hun_flɛtɛli("Balle", 800, 600)
+
+jo bx = 400   jo by = 300
+jo dx = 3     jo dy = 2
+jo r  = 20
+
+azɔwanu mise_a_jour() {
+    jo bx = bx + dx
+    jo by = by + dy
+
+    enyi (bx - r < 0 abi bx + r > 800) { jo dx = dx * -1 }
+    enyi (by - r < 0 abi by + r > 600) { jo dy = dy * -1 }
+
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+}
+
+azɔwanu dessin() {
+    flɛ_couleur(20, 20, 40)
+    flɛ_kpo(bx, by, r, 255, 80, 80)
+    flɛ_signon("Appuyez Échap pour quitter", 10, 10, 180, 180, 180)
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Note technique</strong> — Sur Linux, FonLang utilise Ebiten avec le backend X11 (GLFW).
+        Assurez-vous que les bibliothèques système <code>libX11</code>, <code>libGL</code> et
+        <code>libXxf86vm</code> sont disponibles.
+      </div>
+
+      <div class="page-nav">
+        <a href="stdlib.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Bibliothèques standard</span></a>
+        <a href="../reference/mots-cles.html" class="next"><span class="nav-dir">Référence &rarr;</span><span class="nav-title">Mots-clés</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

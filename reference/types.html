@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Types de données — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Référence<span>/</span>Types de données
+      </div>
+    </div>
+    <article>
+      <h1>Types de données</h1>
+      <p class="page-subtitle">Les 7 types de valeurs en FonLang, avec leurs règles de coercition.</p>
+
+      <!-- Vue d'ensemble -->
+      <h2>Vue d'ensemble</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Type interne</th><th>Nom Fon</th><th>Littéral exemple</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>KindInt</code></td><td><code>kɛn</code></td><td><code>42</code></td><td>Entier 64 bits signé</td></tr>
+            <tr><td><code>KindFloat</code></td><td><code>kɛn</code></td><td><code>3.14</code></td><td>Flottant IEEE-754 64 bits</td></tr>
+            <tr><td><code>KindString</code></td><td><code>wekwin</code></td><td><code>"Akɔ"</code></td><td>Chaîne UTF-8</td></tr>
+            <tr><td><code>KindBool</code></td><td><code>nugbo/nuvu</code></td><td><code>nugbo</code></td><td>Booléen</td></tr>
+            <tr><td><code>KindNull</code></td><td><code>vɔ</code></td><td><code>vɔ</code></td><td>Valeur nulle</td></tr>
+            <tr><td><code>KindArray</code></td><td><code>wemawlanxwlɛ</code></td><td><code>[1, 2, 3]</code></td><td>Tableau ordonné</td></tr>
+            <tr><td><code>KindMap</code></td><td><code>tɛnmɛ</code></td><td>via <code>json_xa</code></td><td>Map clé→valeur (string keys)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Entier -->
+      <h2>Entier — <span class="kw">kɛn</span></h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo a = 42
+jo b = -7
+jo c = 1_000_000   // les underscores ne sont pas encore supportés — écrire 1000000
+
+xlɛ(a + b)   // 35
+xlɛ(a * b)   // -294</code></pre>
+      </div>
+
+      <!-- Flottant -->
+      <h2>Flottant — <span class="kw">kɛn</span></h2>
+      <p>Un nombre avec point décimal est automatiquement un flottant.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo pi  = 3.14159
+jo tau = 6.28318
+
+xlɛ(pi * 2)       // 6.28318
+xlɛ(racine(2.0))  // 1.4142135623730951</code></pre>
+      </div>
+      <div class="callout callout-tip">
+        <strong>Coercition numérique</strong>
+        Les opérations mixtes entier/flottant produisent toujours un flottant :
+        <code>3 + 1.5</code> → <code>4.5</code>.
+      </div>
+
+      <!-- Chaîne -->
+      <h2>Chaîne — <span class="kw">wekwin</span></h2>
+      <p>Les chaînes sont délimitées par des guillemets doubles. Elles supportent les séquences d'échappement.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo s = "Mì wá dó !"
+jo multi = "ligne1\nligne2\nligne3"
+jo tab   = "col1\tcol2"
+
+// Concaténation avec +
+xlɛ("Bonjour " + "monde")   // Bonjour monde
+
+// Concaténation avec un nombre
+xlɛ("Score : " + 42)        // Score : 42
+
+// Accès à un caractère par index
+xlɛ(s[0])   // M</code></pre>
+      </div>
+
+      <h4>Séquences d'échappement</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Séquence</th><th>Caractère</th></tr></thead>
+          <tbody>
+            <tr><td><code>\n</code></td><td>Saut de ligne</td></tr>
+            <tr><td><code>\t</code></td><td>Tabulation</td></tr>
+            <tr><td><code>\r</code></td><td>Retour chariot</td></tr>
+            <tr><td><code>\\</code></td><td>Antislash</td></tr>
+            <tr><td><code>\"</code></td><td>Guillemet double</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Booléen -->
+      <h2>Booléen — <span class="kw">nugbo</span> / <span class="kw">nuvu</span></h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo vrai = nugbo
+jo faux = nuvu
+
+xlɛ(vrai && faux)   // nuvu
+xlɛ(vrai || faux)   // nugbo
+xlɛ(!vrai)          // nuvu</code></pre>
+      </div>
+
+      <!-- Null -->
+      <h2>Null — <span class="kw">vɔ</span> / <span class="kw">vɔtɔ</span></h2>
+      <p><code>vɔ</code> et son alias <code>vɔtɔ</code> représentent l'absence de valeur. Ils sont <strong>falsy</strong>.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo rien = vɔ
+enyi (rien) {
+    xlɛ("jamais atteint")
+} alo {
+    xlɛ("vɔ est falsy")
+}</code></pre>
+      </div>
+
+      <!-- Tableau -->
+      <h2>Tableau — <span class="kw">wemawlanxwlɛ</span></h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo arr = [1, "deux", nugbo, [3, 4]]
+
+xlɛ(arr[0])       // 1
+xlɛ(arr[1])       // deux
+xlɛ(arr[3][1])    // 4  — tableau imbriqué
+xlɛ(gaɖiɖi(arr)) // 4</code></pre>
+      </div>
+
+      <!-- Map -->
+      <h2>Map — <span class="kw">tɛnmɛ</span></h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo m = json_xa("{\"nom\":\"Akɔ\",\"age\":25,\"actif\":true}")
+
+xlɛ(m["nom"])     // Akɔ
+xlɛ(m["age"])     // 25
+xlɛ(m["actif"])   // nugbo
+xlɛ(m["absent"])  // vɔ  (clé inexistante → null)</code></pre>
+      </div>
+
+      <!-- Règles falsy -->
+      <h2>Règles de vérité (truthy / falsy)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Valeur</th><th>Vérité</th></tr></thead>
+          <tbody>
+            <tr><td><code>nuvu</code></td><td>falsy</td></tr>
+            <tr><td><code>vɔ</code> / <code>vɔtɔ</code></td><td>falsy</td></tr>
+            <tr><td>Tout le reste</td><td>truthy (y compris <code>0</code> et <code>""</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a href="mots-cles.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Mots-clés</span></a>
+        <a href="operateurs.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Opérateurs</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

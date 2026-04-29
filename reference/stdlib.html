@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stdlib — Référence complète — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Référence<span>/</span>Stdlib
+      </div>
+    </div>
+    <article>
+      <h1>Bibliothèque standard — Référence</h1>
+      <p class="page-subtitle">Toutes les fonctions natives disponibles dans FonLang, organisées par domaine.</p>
+
+      <!-- E/S -->
+      <h2>Entrée / Sortie</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>xlɛ</code></td>
+              <td><code>xlɛ(...valeurs)</code></td>
+              <td>Affiche les valeurs séparées par un espace, avec saut de ligne final.</td>
+            </tr>
+            <tr>
+              <td><code>xlɛf</code></td>
+              <td><code>xlɛf(format, ...args)</code></td>
+              <td>Affichage formaté. Marqueurs : <code>%d</code> (int), <code>%f</code> (float), <code>%s</code> (string), <code>%g</code> (auto), <code>%v</code> (any), <code>%%</code> (littéral %).</td>
+            </tr>
+            <tr>
+              <td><code>xa</code></td>
+              <td><code>xa() → wekwin</code></td>
+              <td>Lit une ligne sur l'entrée standard et retourne une chaîne.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>xlɛ("Bonjour", "monde")              // Bonjour monde
+xlɛf("Pi ≈ %.4f\n", 3.14159)         // Pi ≈ 3.1416
+xlɛf("%s a %d lettres\n", "Fon", 3)  // Fon a 3 lettres
+
+jo nom = xa()   // attend la saisie utilisateur</code></pre>
+      </div>
+
+      <!-- Mathématiques -->
+      <h2>Mathématiques</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>abs</code></td><td><code>abs(x) → kɛn</code></td><td>Valeur absolue</td></tr>
+            <tr><td><code>mli</code></td><td><code>mli(x) → kɛn</code></td><td>Arrondi à l'entier le plus proche</td></tr>
+            <tr><td><code>plancher</code></td><td><code>plancher(x) → kɛn</code></td><td>Arrondi vers le bas (floor)</td></tr>
+            <tr><td><code>plafond</code></td><td><code>plafond(x) → kɛn</code></td><td>Arrondi vers le haut (ceil)</td></tr>
+            <tr><td><code>racine</code></td><td><code>racine(x) → kɛn</code></td><td>Racine carrée</td></tr>
+            <tr><td><code>puissance</code></td><td><code>puissance(base, exp) → kɛn</code></td><td>Exponentiation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Trigonométrie -->
+      <h2>Trigonométrie</h2>
+      <p>Toutes les fonctions attendent des angles en <strong>radians</strong> et retournent un flottant.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>sinus</code></td><td><code>sinus(x) → kɛn</code></td><td>Sinus</td></tr>
+            <tr><td><code>cosinus</code></td><td><code>cosinus(x) → kɛn</code></td><td>Cosinus</td></tr>
+            <tr><td><code>tanjante</code></td><td><code>tanjante(x) → kɛn</code></td><td>Tangente</td></tr>
+            <tr><td><code>cotanjante</code></td><td><code>cotanjante(x) → kɛn</code></td><td>Cotangente (1 / tan(x))</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Convertir degrés → radians : deg * π / 180
+jo PI = 3.14159265358979
+
+xlɛ(sinus(PI / 2))     // 1.0
+xlɛ(cosinus(0))        // 1.0
+xlɛ(tanjante(PI / 4))  // ~1.0</code></pre>
+      </div>
+
+      <!-- Aléatoire -->
+      <h2>Aléatoire</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>nukpedonunu</code></td><td><code>nukpedonunu(n) → kɛn</code></td><td>Entier aléatoire dans [0, n)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Chaînes -->
+      <h2>Chaînes de caractères</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gaɖiɖi</code></td><td><code>gaɖiɖi(s) → kɛn</code></td><td>Nombre de caractères (runes UTF-8)</td></tr>
+            <tr><td><code>wekwin_daxo</code></td><td><code>wekwin_daxo(s) → wekwin</code></td><td>Convertit en wekwin_daxos</td></tr>
+            <tr><td><code>wekwin_kpɛvi</code></td><td><code>wekwin_kpɛvi(s) → wekwin</code></td><td>Convertit en wekwin_kpɛvis</td></tr>
+            <tr><td><code>trim</code></td><td><code>trim(s) → wekwin</code></td><td>Supprime les espaces en début et fin</td></tr>
+            <tr><td><code>contient</code></td><td><code>contient(s, sub) → nugbo/nuvu</code></td><td>Vrai si s contient sub</td></tr>
+            <tr><td><code>ebεsin</code></td><td><code>ebεsin(s, prefix) → nugbo/nuvu</code></td><td>Vrai si s commence par prefix</td></tr>
+            <tr><td><code>efodo</code></td><td><code>efodo(s, suffix) → nugbo/nuvu</code></td><td>Vrai si s finit par suffix</td></tr>
+            <tr><td><code>eɖyɔ</code></td><td><code>eɖyɔ(s, ancien, nouveau) → wekwin</code></td><td>Remplace toutes les occurrences</td></tr>
+            <tr><td><code>klan</code></td><td><code>klan(s, sep) → wemawlanxwlɛ</code></td><td>Divise s en tableau selon le séparateur</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Collections -->
+      <h2>Collections</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>gaɖiɖi</code></td><td><code>gaɖiɖi(arr) → kɛn</code></td><td>Nombre d'éléments du tableau</td></tr>
+            <tr><td><code>gɔna</code></td><td><code>gɔna(arr, val) → wemawlanxwlɛ</code></td><td>Retourne un nouveau tableau avec val ajouté en fin</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Conversions -->
+      <h2>Conversions de type</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Alias</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>kɛn</code></td><td><code>toInt</code></td><td><code>kɛn(x) → kɛn</code></td><td>Convertit en nombre (string → int/float, bool → 0/1)</td></tr>
+            <tr><td><code>wekwin</code></td><td><code>toString</code></td><td><code>wekwin(x) → wekwin</code></td><td>Convertit n'importe quelle valeur en chaîne</td></tr>
+            <tr><td><code>toBool</code></td><td>—</td><td><code>toBool(x) → nugbo/nuvu</code></td><td>Convertit selon les règles truthy/falsy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Date/Heure -->
+      <h2>Date &amp; Heure</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signification (Fon)</th><th>Signature</th><th>Retour exemple</th></tr></thead>
+          <tbody>
+            <tr><td><code>egbe</code></td><td>« aujourd'hui »</td><td><code>egbe() → wekwin</code></td><td><code>"2026-04-28"</code></td></tr>
+            <tr><td><code>azan</code></td><td>« maintenant »</td><td><code>azan() → wekwin</code></td><td><code>"2026-04-28 14:30:00"</code></td></tr>
+            <tr><td><code>gan</code></td><td>« heure »</td><td><code>gan() → kɛn</code></td><td><code>14</code> (0–23)</td></tr>
+            <tr><td><code>nukunxwixwe</code></td><td>« seconde »</td><td><code>nukunxwixwe() → kɛn</code></td><td><code>42</code> (0–59)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- HTTP -->
+      <h2>HTTP</h2>
+      <p>Retournent une map <code>tɛnmɛ</code> avec les clés <code>"corps"</code> (wekwin) et <code>"statut"</code> (kɛn).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>http_get</code></td><td><code>http_get(url) → tɛnmɛ</code></td><td>Requête HTTP GET</td></tr>
+            <tr><td><code>http_post</code></td><td><code>http_post(url, corps) → tɛnmɛ</code></td><td>Requête HTTP POST (Content-Type: application/json)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fichiers -->
+      <h2>Fichiers</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>wema_xa</code></td><td><code>wema_xa(chemin) → wekwin</code></td><td>Lit le contenu entier d'un fichier texte</td></tr>
+            <tr><td><code>wema_ecrire</code></td><td><code>wema_ecrire(chemin, contenu) → nugbo</code></td><td>Écrit ou écrase un fichier texte</td></tr>
+            <tr><td><code>wema_eɖe</code></td><td><code>wema_eɖe(chemin) → nugbo/nuvu</code></td><td>Vrai si le chemin existe</td></tr>
+            <tr><td><code>wema_sunsun</code></td><td><code>wema_sunsun(chemin) → nugbo</code></td><td>Supprime un fichier</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- JSON -->
+      <h2>JSON</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>json_ecrire</code></td><td><code>json_ecrire(val) → wekwin</code></td><td>Sérialise une valeur FonLang en JSON</td></tr>
+            <tr><td><code>json_xa</code></td><td><code>json_xa(str) → valeur</code></td><td>Désérialise du JSON en valeur FonLang. Les objets deviennent des <code>tɛnmɛ</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a href="operateurs.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Opérateurs</span></a>
+        <a href="../examples/index.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Exemples</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

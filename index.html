@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FonLang — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar injectée par JS -->
+  <aside class="sidebar"></aside>
+
+  <div class="content">
+    <!-- Hero -->
+    <div class="hero">
+      <div style="max-width:860px">
+        <h1>FonLang</h1>
+        <p class="hero-sub">Le premier langage de programmation à syntaxe <strong style="color:#f59e0b">Fon</strong></p>
+        <p class="hero-author">
+          Créé par <strong>AWADEME Finanfa Ronaldo</strong> —
+          langue parlée au Bénin et au Togo (Afrique de l'Ouest)
+        </p>
+        <div class="hero-badges">
+          <span class="badge badge-lang">Go &amp; Rust</span>
+          <span class="badge badge-status">Alpha</span>
+          <span class="badge badge-ver">v0.1.0</span>
+        </div>
+      </div>
+    </div>
+
+    <article>
+      <!-- Introduction -->
+      <h2>Présentation</h2>
+      <p>
+        <strong>FonLang</strong> est un langage de programmation impératif dont les mots-clés sont tirés
+        de la langue <strong>Fon</strong> (<em>Fɔngbè</em>), parlée par plusieurs millions de personnes
+        au Bénin, au Togo et dans la diaspora africaine.
+      </p>
+      <p>
+        L'objectif est de rendre la programmation accessible dans un contexte culturel et linguistique
+        africain, tout en produisant un langage complet et expressif avec un support natif pour
+        le réseau HTTP, les fichiers, le JSON et la manipulation de données.
+      </p>
+
+      <!-- Fonctionnalités -->
+      <h2>Fonctionnalités</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">&#x1F4AC;</div>
+          <h3>Syntaxe Fon</h3>
+          <p>Mots-clés tirés de la langue Fon. Conditions entre parenthèses, blocs avec <code>{}</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#x26A1;</div>
+          <h3>Fonctions de première classe</h3>
+          <p>Closures, fonctions anonymes, variadiques, récursion et fonctions d'ordre supérieur.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#x1F4E6;</div>
+          <h3>Collections natives</h3>
+          <p>Tableaux <code>wemawlanxwlɛ</code>, maps associatives, for-in avec <code>ɖo</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#x1F310;</div>
+          <h3>HTTP &amp; JSON</h3>
+          <p>Requêtes GET/POST, encodage/décodage JSON, tout nativement disponible.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#x1F4C1;</div>
+          <h3>Fichiers</h3>
+          <p>Lecture, écriture, vérification et suppression de fichiers avec <code>wema_*</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#x1F522;</div>
+          <h3>Mathématiques</h3>
+          <p>Trigonométrie, racine carrée, puissance, arrondi, valeur absolue et plus encore.</p>
+        </div>
+      </div>
+
+      <!-- Aperçu du code -->
+      <h2>Aperçu rapide</h2>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-lang">fon</span>
+          <button class="code-copy">Copier</button>
+        </div>
+        <pre><code>// Déclaration de variables
+jo nom = "Akɔ"
+jo age  = 25
+
+// Condition
+enyi (age >= 18) {
+    xlɛ(nom + " est majeur·e")
+} alo {
+    xlɛ(nom + " est mineur·e")
+}
+
+// Boucle for classique
+jo somme = 0
+sin (jo i = 1; i <= 10; i++) {
+    somme = somme + i
+}
+xlɛf("Somme 1..10 = %d\n", somme)
+
+// For-in sur un tableau
+jo fruits = ["mangue", "papaye", "ananas"]
+sin (fruit ɖo fruits) {
+    xlɛ(fruit)
+}
+
+// Fonction récursive
+azɔwanu factorielle(n) {
+    enyi (n == 0) { lɛkɔ 1 }
+    alo { lɛkɔ n * factorielle(n - 1) }
+}
+xlɛ("6! = " + factorielle(6))</code></pre>
+      </div>
+
+      <!-- Quick start -->
+      <h2>Démarrage en 30 secondes</h2>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-lang">bash</span>
+          <button class="code-copy">Copier</button>
+        </div>
+        <pre><code class="language-bash"># Cloner et compiler
+git clone https://github.com/fonlang/fonlang
+cd fonlang
+go build -o fonlang ./cmd/fonlang
+
+# Exécuter un fichier .fon
+./fonlang monprogramme.fon
+
+# Lancer le REPL interactif
+./fonlang</code></pre>
+      </div>
+
+      <!-- Architecture -->
+      <h2>Architecture</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Composant</th><th>Technologie</th><th>Phase</th><th>Statut</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Lexer</td><td>Go</td><td>1</td><td>✅ Terminé</td></tr>
+            <tr><td>Parser (Pratt)</td><td>Go</td><td>1</td><td>✅ Terminé</td></tr>
+            <tr><td>AST</td><td>Go</td><td>1</td><td>✅ Terminé</td></tr>
+            <tr><td>Interpréteur (tree-walking)</td><td>Go</td><td>2</td><td>✅ Terminé</td></tr>
+            <tr><td>Bibliothèque standard</td><td>Go</td><td>2</td><td>✅ Terminé</td></tr>
+            <tr><td>Compilateur LLVM</td><td>Rust</td><td>3</td><td>⏳ À venir</td></tr>
+            <tr><td>SDK Flutter / IDE</td><td>Dart</td><td>4</td><td>⏳ À venir</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Navigation -->
+      <div class="page-nav">
+        <a href="guide/demarrage.html" class="next">
+          <span class="nav-dir">Commencer &rarr;</span>
+          <span class="nav-title">Démarrage rapide</span>
+        </a>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="assets/main.js"></script>
+<script>renderSidebar('');</script>
+</body>
+</html>

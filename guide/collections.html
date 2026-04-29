@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Collections
+      </div>
+    </div>
+    <article>
+      <h1>Collections</h1>
+      <p class="page-subtitle">Tableaux (<code>wemawlanxwlɛ</code>) et maps associatives (<code>tɛnmɛ</code>).</p>
+
+      <h2>Tableaux — <span class="kw">wemawlanxwlɛ</span></h2>
+      <p>Alias : <code>tablo</code>. Un tableau est une liste ordonnée de valeurs de n'importe quel type.</p>
+
+      <h3>Création</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo nombres   = [1, 2, 3, 4, 5]
+jo mots      = ["Fon", "Gbe", "Akɔ"]
+jo mixte     = [42, "texte", nugbo, vɔ]
+jo vide      = []</code></pre>
+      </div>
+
+      <h3>Accès par index</h3>
+      <p>Les indices commencent à <strong>0</strong>.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo arr = [10, 20, 30, 40]
+xlɛ(arr[0])   // 10
+xlɛ(arr[2])   // 30</code></pre>
+      </div>
+
+      <h3>Longueur</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo arr = [1, 2, 3]
+xlɛ(gaɖiɖi(arr))   // 3</code></pre>
+      </div>
+
+      <h3>Ajouter un élément</h3>
+      <p><code>gɔna</code> retourne un <strong>nouveau</strong> tableau (les tableaux sont immuables).</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo arr = [1, 2, 3]
+jo arr2 = gɔna(arr, 4)
+xlɛ(arr2)   // [1, 2, 3, 4]</code></pre>
+      </div>
+
+      <h3>Itération avec for-in</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo notes = [14, 18, 12, 16, 20]
+jo somme = 0
+
+sin (n ɖo notes) {
+    somme = somme + n
+}
+
+jo moyenne = somme / gaɖiɖi(notes)
+xlɛf("Moyenne : %.1f\n", kɛn(moyenne))</code></pre>
+      </div>
+
+      <h3>Découpage avec <code>klan</code></h3>
+      <p><code>klan</code> divise une chaîne en tableau selon un séparateur.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo csv    = "rouge,vert,bleu"
+jo parts  = klan(csv, ",")
+
+sin (c ɖo parts) {
+    xlɛ(c)
+}
+// rouge
+// vert
+// bleu</code></pre>
+      </div>
+
+      <h2>Maps associatives — <span class="kw">tɛnmɛ</span></h2>
+      <p>Les maps sont créées par les fonctions <code>json_xa</code> ou <code>http_get</code>/<code>http_post</code>.
+      Une map associe des clés <em>wekwin</em> (chaînes) à des valeurs de n'importe quel type.</p>
+
+      <h3>Créer une map via JSON</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo personne = json_xa("{\"nom\":\"Akɔ\",\"age\":25}")
+
+xlɛ(personne["nom"])    // Akɔ
+xlɛ(personne["age"])    // 25</code></pre>
+      </div>
+
+      <h3>Utilisation avec HTTP</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo reponse = http_get("https://api.exemple.com/data")
+
+xlɛ(reponse["statut"])   // 200
+xlɛ(reponse["corps"])    // corps de la réponse</code></pre>
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>Clé absente</strong>
+        Accéder à une clé inexistante retourne <code>vɔ</code> (null) sans erreur.
+      </div>
+
+      <h2>Tableaux de maps</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo json_str = "[{\"id\":1,\"nom\":\"Alice\"},{\"id\":2,\"nom\":\"Bob\"}]"
+jo utilisateurs = json_xa(json_str)
+
+sin (u ɖo utilisateurs) {
+    xlɛf("ID %d : %s\n", u["id"], u["nom"])
+}
+// ID 1 : Alice
+// ID 2 : Bob</code></pre>
+      </div>
+
+      <div class="page-nav">
+        <a href="fonctions.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Fonctions</span></a>
+        <a href="stdlib.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Bibliothèques standard</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemples — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Exemples
+      </div>
+    </div>
+    <article>
+      <h1>Exemples de programmes</h1>
+      <p class="page-subtitle">
+        Des programmes complets en FonLang, du plus simple au plus avancé, pour apprendre par la pratique.
+      </p>
+
+      <!-- 1. Hello World -->
+      <h2>1. Bonjour le monde</h2>
+      <p>Le classique premier programme, en version simple et avec formatage.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Bonjour monde — FonLang
+xlɛ("Bonjour le monde !")
+xlɛf("Bienvenue dans %s v%d.%d\n", "FonLang", 1, 0)</code></pre>
+      </div>
+      <div class="callout callout-tip">
+        <strong>Sortie</strong><br>
+        <code>Bonjour le monde !<br>Bienvenue dans FonLang v1.0</code>
+      </div>
+
+      <!-- 2. Fibonacci -->
+      <h2>2. Suite de Fibonacci</h2>
+      <p>Calcul récursif de la suite de Fibonacci avec mémoïsation manuelle.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Suite de Fibonacci — récursif
+azɔwanu fibo(n) {
+    enyi (n <= 1) {
+        lɛkɔ n
+    }
+    lɛkɔ fibo(n - 1) + fibo(n - 2)
+}
+
+sin (jo i = 0; i <= 10; i++) {
+    xlɛf("fibo(%d) = %d\n", i, fibo(i))
+}</code></pre>
+      </div>
+      <div class="callout callout-tip">
+        <strong>Sortie</strong><br>
+        <code>fibo(0) = 0<br>fibo(1) = 1<br>fibo(2) = 1<br>fibo(3) = 2<br>fibo(4) = 3<br>fibo(5) = 5<br>…</code>
+      </div>
+
+      <!-- 3. FizzBuzz -->
+      <h2>3. FizzBuzz</h2>
+      <p>Le classique test d'entretien, en syntaxe Fon.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// FizzBuzz de 1 à 30
+sin (jo i = 1; i <= 30; i++) {
+    enyi (i % 15 == 0) {
+        xlɛ("FizzBuzz")
+    } alo enyi (i % 3 == 0) {
+        xlɛ("Fizz")
+    } alo enyi (i % 5 == 0) {
+        xlɛ("Buzz")
+    } alo {
+        xlɛ(i)
+    }
+}</code></pre>
+      </div>
+
+      <!-- 4. Factorielle -->
+      <h2>4. Factorielle</h2>
+      <p>Calcul itératif et récursif de la factorielle.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Factorielle itérative
+azɔwanu factorielle(n) {
+    jo res = 1
+    sin (jo i = 2; i <= n; i++) {
+        res = res * i
+    }
+    lɛkɔ res
+}
+
+// Factorielle récursive
+azɔwanu factRec(n) {
+    enyi (n <= 1) { lɛkɔ 1 }
+    lɛkɔ n * factRec(n - 1)
+}
+
+xlɛf("10! = %d\n", factorielle(10))   // 3628800
+xlɛf("12! = %d\n", factRec(12))       // 479001600</code></pre>
+      </div>
+
+      <!-- 5. Tri à bulles -->
+      <h2>5. Tri à bulles</h2>
+      <p>Implémentation du tri à bulles sur un tableau d'entiers.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Tri à bulles
+azɔwanu bubuTri(arr) {
+    jo n = gaɖiɖi(arr)
+    jo trie = nuvu
+    hwenue (!trie) {
+        trie = nugbo
+        sin (jo i = 0; i < n - 1; i++) {
+            enyi (arr[i] > arr[i + 1]) {
+                jo tmp  = arr[i]
+                arr[i]  = arr[i + 1]
+                arr[i + 1] = tmp
+                trie = nuvu
+            }
+        }
+    }
+    lɛkɔ arr
+}
+
+jo nombres = [64, 34, 25, 12, 22, 11, 90]
+jo tries   = bubuTri(nombres)
+
+xlɛ("Tableau trié :")
+sin (jo v ɖo tries) {
+    xlɛf("%d ", v)
+}
+xlɛ("")</code></pre>
+      </div>
+
+      <!-- 6. Calculatrice -->
+      <h2>6. Calculatrice interactive</h2>
+      <p>Petite calculatrice en ligne de commande utilisant <code>xa()</code> et <code>bɔdewu</code>.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Calculatrice interactive
+xlɛ("=== Calculatrice FonLang ===")
+xlɛ("Opérations : + - * /  |  'q' pour quitter")
+xlɛ("")
+
+jo continuer = nugbo
+hwenue (continuer) {
+    xlɛf("Premier nombre  : ")
+    jo a = kɛn(xa())
+
+    xlɛf("Opération       : ")
+    jo op = trim(xa())
+
+    enyi (op == "q") {
+        continuer = nuvu
+        yinukɔn
+    }
+
+    xlɛf("Deuxième nombre : ")
+    jo b = kɛn(xa())
+
+    bɔdewu (op) {
+        enyi "+" { xlɛf("= %g\n", a + b) }
+        enyi "-" { xlɛf("= %g\n", a - b) }
+        enyi "*" { xlɛf("= %g\n", a * b) }
+        enyi "/" {
+            enyi (b == 0) {
+                xlɛ("Erreur : division par zéro !")
+            } alo {
+                xlɛf("= %g\n", a / b)
+            }
+        }
+        alo { xlɛf("Opération inconnue : %s\n", op) }
+    }
+    xlɛ("")
+}
+
+xlɛ("À bientôt !")</code></pre>
+      </div>
+
+      <!-- 7. Génération de mots de passe -->
+      <h2>7. Générateur de mots de passe</h2>
+      <p>Génère un mot de passe aléatoire d'une gaɖiɖi donnée.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Générateur de mots de passe aléatoires
+jo CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
+
+azɔwanu genererMDP(gaɖiɖiMDP) {
+    jo mdp = ""
+    jo total = gaɖiɖi(CHARS)
+    sin (jo i = 0; i < gaɖiɖiMDP; i++) {
+        jo idx = nukpedonunu(total)
+        mdp = mdp + CHARS[idx]
+    }
+    lɛkɔ mdp
+}
+
+xlɛf("MDP 12 car. : %s\n", genererMDP(12))
+xlɛf("MDP 20 car. : %s\n", genererMDP(20))
+xlɛf("MDP 8  car. : %s\n", genererMDP(8))</code></pre>
+      </div>
+
+      <!-- 8. Statistiques -->
+      <h2>8. Statistiques sur un tableau</h2>
+      <p>Calcul de la moyenne, du minimum et du maximum d'une liste de valeurs.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Fonctions statistiques
+azɔwanu moyenne(arr) {
+    jo somme = 0
+    sin (jo v ɖo arr) { somme = somme + v }
+    lɛkɔ somme / gaɖiɖi(arr)
+}
+
+azɔwanu minimum(arr) {
+    jo min = arr[0]
+    sin (jo v ɖo arr) {
+        enyi (v < min) { min = v }
+    }
+    lɛkɔ min
+}
+
+azɔwanu maximum(arr) {
+    jo max = arr[0]
+    sin (jo v ɖo arr) {
+        enyi (v > max) { max = v }
+    }
+    lɛkɔ max
+}
+
+jo notes = [14, 18, 9, 16, 11, 17, 13, 20, 8, 15]
+
+xlɛf("Notes    : ")
+sin (jo n ɖo notes) { xlɛf("%d ", n) }
+xlɛ("")
+xlɛf("Moyenne  : %.2f\n", moyenne(notes))
+xlɛf("Minimum  : %d\n",   minimum(notes))
+xlɛf("Maximum  : %d\n",   maximum(notes))</code></pre>
+      </div>
+
+      <!-- 9. Fichiers -->
+      <h2>9. Journal de bord (fichiers)</h2>
+      <p>Écriture et lecture de fichiers — un journal simple persistant sur disque.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Journal de bord avec fichiers
+jo FICHIER = "/tmp/journal_fon.txt"
+
+azɔwanu gɔnaEntree(texte) {
+    jo horodatage = azan()
+    jo ligne = "[" + horodatage + "] " + texte + "\n"
+
+    enyi (wema_eɖe(FICHIER)) {
+        jo existant = wema_xa(FICHIER)
+        wema_ecrire(FICHIER, existant + ligne)
+    } alo {
+        wema_ecrire(FICHIER, ligne)
+    }
+}
+
+azɔwanu afficherJournal() {
+    enyi (wema_eɖe(FICHIER)) {
+        xlɛ(wema_xa(FICHIER))
+    } alo {
+        xlɛ("Journal vide.")
+    }
+}
+
+gɔnaEntree("Démarrage du programme")
+gɔnaEntree("Traitement des données en cours...")
+gɔnaEntree("Traitement terminé avec succès")
+
+xlɛ("=== Journal de bord ===")
+afficherJournal()
+
+wema_sunsun(FICHIER)
+xlɛ("Journal effacé.")</code></pre>
+      </div>
+
+      <!-- 10. HTTP + JSON -->
+      <h2>10. Requête HTTP &amp; JSON</h2>
+      <p>Interrogation d'une API publique et traitement de la réponse JSON.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Requête sur une API JSON publique
+xlɛ("Récupération des données...")
+
+jo rep = http_get("https://jsonplaceholder.typicode.com/todos/1")
+
+enyi (rep["statut"] == 200) {
+    jo todo = json_xa(rep["corps"])
+    xlɛf("ID      : %d\n",    todo["id"])
+    xlɛf("Titre   : %s\n",    todo["title"])
+    xlɛf("Terminé : %s\n",    wekwin(todo["completed"]))
+} alo {
+    xlɛf("Erreur HTTP : %d\n", rep["statut"])
+}</code></pre>
+      </div>
+
+      <!-- 11. Jeu de devinette -->
+      <h2>11. Jeu de devinette</h2>
+      <p>Le programme choisit un nombre entre 1 et 100, le joueur doit le trouver.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Jeu de devinette
+jo secret   = nukpedonunu(100) + 1
+jo tentatives = 0
+jo gagne    = nuvu
+
+xlɛ("=== Jeu de devinette ===")
+xlɛ("Je pense à un nombre entre 1 et 100.")
+xlɛ("Trouvez-le !")
+xlɛ("")
+
+hwenue (!gagne) {
+    xlɛf("Votre proposition : ")
+    jo saisie = trim(xa())
+    jo proposition = kɛn(saisie)
+    tentatives++
+
+    enyi (proposition < secret) {
+        xlɛ("Trop petit !")
+    } alo enyi (proposition > secret) {
+        xlɛ("Trop grand !")
+    } alo {
+        gagne = nugbo
+        xlɛf("Bravo ! Vous avez trouvé %d en %d tentative(s) !\n",
+             secret, tentatives)
+    }
+}</code></pre>
+      </div>
+
+      <!-- 12. Fonctions d'ordre supérieur -->
+      <h2>12. Fonctions d'ordre supérieur</h2>
+      <p>Implémentation de <code>map</code>, <code>filter</code> et <code>reduce</code> en FonLang.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// map, filter, reduce maison
+
+azɔwanu appliquer(arr, fn) {
+    jo res = []
+    sin (jo v ɖo arr) {
+        res = gɔna(res, fn(v))
+    }
+    lɛkɔ res
+}
+
+azɔwanu filtrer(arr, pred) {
+    jo res = []
+    sin (jo v ɖo arr) {
+        enyi (pred(v)) { res = gɔna(res, v) }
+    }
+    lɛkɔ res
+}
+
+azɔwanu reduire(arr, fn, init) {
+    jo acc = init
+    sin (jo v ɖo arr) {
+        acc = fn(acc, v)
+    }
+    lɛkɔ acc
+}
+
+jo nombres = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// Doubler chaque élément
+jo doubles = appliquer(nombres, azɔwanu(x) { lɛkɔ x * 2 })
+
+// Garder les pairs
+jo pairs = filtrer(nombres, azɔwanu(x) { lɛkɔ x % 2 == 0 })
+
+// Somme totale
+jo somme = reduire(nombres, azɔwanu(acc, x) { lɛkɔ acc + x }, 0)
+
+xlɛf("Doubles  : ")
+sin (jo v ɖo doubles) { xlɛf("%d ", v) }
+xlɛ("")
+
+xlɛf("Pairs    : ")
+sin (jo v ɖo pairs) { xlɛf("%d ", v) }
+xlɛ("")
+
+xlɛf("Somme    : %d\n", somme)</code></pre>
+      </div>
+
+      <!-- 13. Trigonométrie -->
+      <h2>13. Table trigonométrique</h2>
+      <p>Génère une table de sinus, cosinus et tangente pour des angles courants.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Table trigonométrique
+jo PI = 3.14159265358979
+
+azɔwanu degreEnRadian(deg) {
+    lɛkɔ deg * PI / 180.0
+}
+
+xlɛ("Deg   sin      cos      tan")
+xlɛ("----  -------  -------  --------")
+
+jo degres = [0, 30, 45, 60, 90, 120, 135, 150, 180]
+sin (jo deg ɖo degres) {
+    jo rad = degreEnRadian(deg)
+    xlɛf("%-4d  %-7.4f  %-7.4f  %-8.4f\n",
+         deg, sinus(rad), cosinus(rad), tanjante(rad))
+}</code></pre>
+      </div>
+
+      <!-- 14. Chiffrement César -->
+      <h2>14. Chiffrement de César</h2>
+      <p>Chiffre et déchiffre un message avec le chiffrement de César.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Chiffrement de César
+jo ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
+azɔwanu cesar(texte, decalage) {
+    jo result = ""
+    jo n = gaɖiɖi(texte)
+    sin (jo i = 0; i < n; i++) {
+        jo c = wekwin_kpɛvi(texte[i])
+        enyi (contient(ALPHABET, c)) {
+            jo pos = 0
+            jo taille = gaɖiɖi(ALPHABET)
+            sin (jo j = 0; j < taille; j++) {
+                enyi (ALPHABET[j] == c) { pos = j }
+            }
+            jo newPos = (pos + decalage) % 26
+            result = result + ALPHABET[newPos]
+        } alo {
+            result = result + texte[i]
+        }
+    }
+    lɛkɔ result
+}
+
+jo message  = "bonjour le monde"
+jo chiffre  = cesar(message, 13)
+jo dechiffre = cesar(chiffre, 13)
+
+xlɛf("Original  : %s\n", message)
+xlɛf("Chiffré   : %s\n", chiffre)
+xlɛf("Déchiffré : %s\n", dechiffre)</code></pre>
+      </div>
+
+      <!-- 15. Mini-agenda -->
+      <h2>15. Mini-agenda JSON</h2>
+      <p>Sauvegarde et charge des événements depuis un fichier JSON.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Mini-agenda persistant en JSON
+jo FICHIER_AGENDA = "/tmp/agenda_fon.json"
+
+azɔwanu chargerAgenda() {
+    enyi (wema_eɖe(FICHIER_AGENDA)) {
+        jo contenu = wema_xa(FICHIER_AGENDA)
+        lɛkɔ json_xa(contenu)
+    }
+    lɛkɔ []
+}
+
+azɔwanu sauvegarderAgenda(evenements) {
+    wema_ecrire(FICHIER_AGENDA, json_ecrire(evenements))
+}
+
+azɔwanu gɔnaEvenement(titre, date) {
+    jo agenda = chargerAgenda()
+    jo ev     = json_xa("{\"titre\":\"" + titre + "\",\"date\":\"" + date + "\"}")
+    agenda    = gɔna(agenda, ev)
+    sauvegarderAgenda(agenda)
+    xlɛf("Événement ajouté : %s (%s)\n", titre, date)
+}
+
+azɔwanu listerEvenements() {
+    jo agenda = chargerAgenda()
+    jo n      = gaɖiɖi(agenda)
+    enyi (n == 0) {
+        xlɛ("Aucun événement.")
+        lɛkɔ vɔ
+    }
+    xlɛf("%d événement(s) :\n", n)
+    sin (jo ev ɖo agenda) {
+        xlɛf("  • %s — %s\n", ev["titre"], ev["date"])
+    }
+}
+
+gɔnaEvenement("Conférence FonLang", "2026-09-15")
+gɔnaEvenement("Demo compilateur",   "2026-09-16")
+gɔnaEvenement("Release v1.0",       "2026-11-30")
+
+xlɛ("")
+xlɛ("=== Mon Agenda ===")
+listerEvenements()
+
+wema_sunsun(FICHIER_AGENDA)</code></pre>
+      </div>
+
+      <!-- 16. Gestion d'erreurs -->
+      <h2>16. Gestion d'erreurs — <code>blokpɔn / wli</code></h2>
+      <p>
+        Le bloc <code>wli</code> capture toute erreur survenue dans <code>blokpɔn</code>.
+        La variable <code>gbogbe</code> est automatiquement disponible à l'intérieur et contient le message d'erreur.
+      </p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Lecture d'un fichier avec gestion d'erreur
+azɔwanu lireFichierSurete(chemin) {
+    blokpɔn {
+        jo contenu = wema_xa(chemin)
+        xlɛ("Contenu :", contenu)
+    } wli {
+        xlɛf("Impossible de lire '%s' : %s\n", chemin, gbogbe)
+    }
+}
+
+lireFichierSurete("/tmp/existe.txt")       // ok si le fichier existe
+lireFichierSurete("/tmp/nexistepas.txt")   // affiche le message d'erreur
+
+// Requête HTTP sécurisée
+blokpɔn {
+    jo rep = http_get("https://jsonplaceholder.typicode.com/todos/1")
+    enyi (rep["statut"] == 200) {
+        jo todo = json_xa(rep["corps"])
+        xlɛf("Todo : %s\n", todo["title"])
+    } alo {
+        xlɛf("Statut inattendu : %d\n", rep["statut"])
+    }
+} wli {
+    xlɛ("Erreur réseau :", gbogbe)
+}</code></pre>
+      </div>
+
+      <!-- 17. Modules -->
+      <h2>17. Modules — <code>kplawa</code></h2>
+      <p>
+        <code>kplawa</code> charge un fichier <code>.fon</code> et l'exécute dans la portée courante.
+        Toutes les fonctions et variables définies dans le module deviennent disponibles.
+      </p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// ── mathutils.fon ──────────────────────────────────────
+azɔwanu carre(x)   { lɛkɔ x * x }
+azɔwanu cube(x)    { lɛkɔ x * x * x }
+azɔwanu estPair(x) { lɛkɔ x % 2 == 0 }
+
+// ── main.fon ────────────────────────────────────────────
+kplawa "mathutils.fon"
+
+xlɛf("4²  = %d\n", carre(4))     // 16
+xlɛf("3³  = %d\n", cube(3))      // 27
+xlɛf("7 pair ? %s\n", wekwin(estPair(7)))   // nuvu</code></pre>
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>Modules combinés avec la gestion d'erreurs</strong>
+        <pre><code>blokpɔn {
+    kplawa "mon_module.fon"
+    xlɛ(maFonction())
+} wli {
+    xlɛ("Erreur lors du chargement du module :", gbogbe)
+}</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Contribuer</strong>
+        Ces exemples sont open-source. Pour en proposer de nouveaux, ouvrez une issue ou une PR sur le dépôt GitHub du projet FonLang.
+      </div>
+
+      <div class="page-nav">
+        <a href="../reference/stdlib.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Stdlib — référence</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

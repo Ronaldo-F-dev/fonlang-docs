@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Structures de contrôle — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Structures de contrôle
+      </div>
+    </div>
+    <article>
+      <h1>Structures de contrôle</h1>
+      <p class="page-subtitle">Conditions, boucles et branchements — toujours entre parenthèses.</p>
+
+      <div class="callout callout-info">
+        <strong>Règle universelle</strong>
+        En FonLang, <strong>toutes les conditions sont entre parenthèses</strong> :
+        <code>enyi (cond)</code>, <code>hwenue (cond)</code>, <code>sin (…)</code>, <code>bɔdewu (expr)</code>.
+      </div>
+
+      <!-- IF -->
+      <h2>Condition — <span class="kw">enyi</span> / <span class="kw">alo</span></h2>
+      <p>Le mot <strong>enyi</strong> signifie « si » en Fon. La clause alternative <strong>alo</strong> signifie « sinon ».</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>enyi (age >= 18) {
+    xlɛ("majeur·e")
+} alo {
+    xlɛ("mineur·e")
+}</code></pre>
+      </div>
+      <h3>Imbrication</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>enyi (note >= 16) {
+    xlɛ("Très bien")
+} alo {
+    enyi (note >= 12) {
+        xlɛ("Bien")
+    } alo {
+        enyi (note >= 10) {
+            xlɛ("Passable")
+        } alo {
+            xlɛ("Insuffisant")
+        }
+    }
+}</code></pre>
+      </div>
+
+      <!-- FOR -->
+      <h2>Boucle for — <span class="kw">sin</span></h2>
+      <h3>For classique</h3>
+      <p>Syntaxe : <code>sin (init; condition; post) { corps }</code></p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Affiche 0 à 4
+sin (jo i = 0; i < 5; i++) {
+    xlɛ(i)
+}
+
+// Compte à rebours
+sin (jo n = 10; n > 0; n--) {
+    xlɛf("%d...\n", n)
+}
+xlɛ("Décollage !")</code></pre>
+      </div>
+
+      <h3>For-in — <span class="kw">ɖo</span></h3>
+      <p>Le mot <strong>ɖo</strong> signifie « dans » en Fon. Il itère sur tableaux et chaînes.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Sur un tableau
+jo pays = ["Bénin", "Togo", "Ghana"]
+sin (p ɖo pays) {
+    xlɛ(p)
+}
+
+// Sur les caractères d'une chaîne
+sin (c ɖo "Fon") {
+    xlɛ(c)    // F, o, n
+}</code></pre>
+      </div>
+
+      <!-- WHILE -->
+      <h2>Boucle while — <span class="kw">hwenue</span></h2>
+      <p><strong>hwenue</strong> signifie « pendant que » en Fon.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo n = 1
+hwenue (n <= 64) {
+    xlɛ(n)
+    n = n * 2
+}
+// 1 2 4 8 16 32 64</code></pre>
+      </div>
+
+      <!-- DO-WHILE -->
+      <h2>Boucle do-while — <span class="kw">blo</span></h2>
+      <p>Le corps s'exécute <strong>au moins une fois</strong>, puis répété tant que la condition est vraie.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo tentative = 0
+blo {
+    tentative++
+    xlɛf("Tentative %d\n", tentative)
+} hwenue (tentative < 3)</code></pre>
+      </div>
+
+      <!-- SWITCH -->
+      <h2>Switch — <span class="kw">bɔdewu</span></h2>
+      <p><strong>bɔdewu</strong> signifie « selon » en Fon. À l'intérieur, <code>enyi</code> introduit chaque cas et <code>alo</code> le cas par défaut.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu nomJour(n) {
+    bɔdewu (n) {
+        enyi 1 { lɛkɔ "Lundi" }
+        enyi 2 { lɛkɔ "Mardi" }
+        enyi 3 { lɛkɔ "Mercredi" }
+        enyi 4 { lɛkɔ "Jeudi" }
+        enyi 5 { lɛkɔ "Vendredi" }
+        alo    { lɛkɔ "Week-end" }
+    }
+}
+xlɛ(nomJour(3))   // Mercredi</code></pre>
+      </div>
+
+      <!-- BREAK/CONTINUE -->
+      <h2>Break et Continue</h2>
+      <h3><span class="kw">nɔte</span> / <span class="kw">gbɔ</span> / <span class="kw">dɔte</span> — break</h3>
+      <p>Les trois mots-clés sont synonymes et interrompent la boucle courante.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>sin (jo i = 0; i < 100; i++) {
+    enyi (i == 5) { nɔte }
+    xlɛ(i)
+}
+// Affiche : 0 1 2 3 4</code></pre>
+      </div>
+      <h3><span class="kw">yinukɔn</span> — continue</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Afficher uniquement les impairs
+sin (jo i = 1; i <= 10; i++) {
+    enyi (i % 2 == 0) { yinukɔn }
+    xlɛ(i)
+}</code></pre>
+      </div>
+
+      <!-- Tableau récapitulatif -->
+      <h2>Récapitulatif</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Instruction</th><th>Mot-clé</th><th>Syntaxe</th></tr></thead>
+          <tbody>
+            <tr><td>Si</td><td><code>enyi</code></td><td><code>enyi (cond) { }</code></td></tr>
+            <tr><td>Si-Sinon</td><td><code>enyi</code> / <code>alo</code></td><td><code>enyi (b) { } alo { }</code></td></tr>
+            <tr><td>For classique</td><td><code>sin</code></td><td><code>sin (jo i=0; i&lt;n; i++) { }</code></td></tr>
+            <tr><td>For-in</td><td><code>sin</code> / <code>ɖo</code></td><td><code>sin (x ɖo arr) { }</code></td></tr>
+            <tr><td>While</td><td><code>hwenue</code></td><td><code>hwenue (cond) { }</code></td></tr>
+            <tr><td>Do-While</td><td><code>blo</code> / <code>hwenue</code></td><td><code>blo { } hwenue (cond)</code></td></tr>
+            <tr><td>Switch</td><td><code>bɔdewu</code></td><td><code>bɔdewu (x) { enyi v { } alo { } }</code></td></tr>
+            <tr><td>Break</td><td><code>nɔte</code> / <code>gbɔ</code> / <code>dɔte</code></td><td><code>nɔte</code></td></tr>
+            <tr><td>Continue</td><td><code>yinukɔn</code></td><td><code>yinukɔn</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a href="demarrage.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Démarrage rapide</span></a>
+        <a href="fonctions.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Fonctions</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>
