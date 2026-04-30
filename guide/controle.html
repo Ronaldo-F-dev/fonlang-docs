@@ -156,6 +156,36 @@ sin (jo i = 1; i <= 10; i++) {
 }</code></pre>
       </div>
 
+      <!-- THROW -->
+      <h2>Lever une erreur — <code>gbɔ</code></h2>
+      <p>
+        Suivi d'une expression, <code>gbɔ</code> <em>lève une erreur</em> au lieu de rompre la boucle.
+        L'erreur peut être capturée avec un bloc <code>blokpɔn / wli</code>.
+      </p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu diviser(a, b) {
+    enyi (b == 0) {
+        gbɔ "Division par zéro !"
+    }
+    lɛkɔ a / b
+}
+
+blokpɔn {
+    xlɛ(diviser(10, 2))    // 5
+    xlɛ(diviser(10, 0))    // lève une erreur
+} wli {
+    xlɛ("Erreur :", gbogbe)
+}</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>gbɔ seul = break, gbɔ + expression = throw</strong><br>
+        Dans une boucle, <code>gbɔ</code> sans valeur interrompt la boucle (synonyme de <code>nɔte</code>).
+        Avec une valeur (<code>gbɔ "message"</code> ou <code>gbɔ objet</code>),
+        il lève une erreur récupérable par <code>wli</code>.
+      </div>
+
       <!-- Tableau récapitulatif -->
       <h2>Récapitulatif</h2>
       <div class="table-wrap">
@@ -170,6 +200,7 @@ sin (jo i = 1; i <= 10; i++) {
             <tr><td>Do-While</td><td><code>blo</code> / <code>hwenue</code></td><td><code>blo { } hwenue (cond)</code></td></tr>
             <tr><td>Switch</td><td><code>bɔdewu</code></td><td><code>bɔdewu (x) { enyi v { } alo { } }</code></td></tr>
             <tr><td>Break</td><td><code>nɔte</code> / <code>gbɔ</code> / <code>dɔte</code></td><td><code>nɔte</code></td></tr>
+            <tr><td>Throw</td><td><code>gbɔ expr</code></td><td><code>gbɔ "message"</code></td></tr>
             <tr><td>Continue</td><td><code>yinukɔn</code></td><td><code>yinukɔn</code></td></tr>
           </tbody>
         </table>

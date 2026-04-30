@@ -379,6 +379,24 @@ code {
 .code-copy:hover { border-color: rgba(217, 119, 6, .52); color: #fffaf4; background: rgba(217, 119, 6, .16); }
 .code-copy.copied { border-color: #86efac; color: #dcfce7; background: rgba(34, 197, 94, .12); }
 
+.exec-time {
+  font-size: 11px;
+  color: #7a6e64;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.exec-time::before {
+  content: "⏱";
+  font-size: 9px;
+  opacity: .7;
+}
+
 .code-block pre {
   margin: 0;
   padding: 22px;
