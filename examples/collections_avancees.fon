@@ -1,0 +1,16 @@
+// Exemple collections — xwí (filter) et ɖekpo (reduce)
+
+jo nombres = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// Garder uniquement les nombres pairs
+jo pairs = xwí(nombres, azɔwanu(x) { lɛkɔ x % 2 == 0 })
+xlɛ("Pairs :")
+sin (v ɖo pairs) { xlɛ(v) }
+
+// Calculer la somme
+jo somme = ɖekpo(nombres, azɔwanu(acc, x) { lɛkɔ acc + x }, 0)
+xlɛ("Somme : " + wekwin(somme))
+
+// Calculer le produit des pairs
+jo produit = ɖekpo(pairs, azɔwanu(acc, x) { lɛkɔ acc * x }, 1)
+xlɛ("Produit des pairs : " + wekwin(produit))

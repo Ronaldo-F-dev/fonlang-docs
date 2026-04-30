@@ -565,6 +565,78 @@ xlɛf("7 pair ? %s\n", wekwin(estPair(7)))   // nuvu</code></pre>
 }</code></pre>
       </div>
 
+      <!-- OOP -->
+      <h2>7. Programmation orientée objet</h2>
+      <p>Classe avec héritage, constructeur et super.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Forme {
+    azɔwanu description() { lɛkɔ "forme" }
+}
+
+zɛn Cercle gu Forme {
+    jo rayon = 0
+    sun(r) { nyɛ.rayon = r }
+
+    azɔwanu description() {
+        jo base = mεjitɔ.description()
+        lɛkɔ base + " ronde (r=" + wekwin(nyɛ.rayon) + ")"
+    }
+
+    ma_ɖyɔ azɔwanu unite() { lɛkɔ nu Cercle(1) }
+}
+
+jo c = nu Cercle(5)
+xlɛ(c.description())          // forme ronde (r=5)
+xlɛ(Cercle.unite().rayon)     // 1</code></pre>
+      </div>
+
+      <!-- xwí / ɖekpo -->
+      <h2>8. Collections — filter et reduce</h2>
+      <p><code>xwí</code> filtre un tableau, <code>ɖekpo</code> le réduit à une valeur.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo nombres = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+jo pairs = xwí(nombres, azɔwanu(x) { lɛkɔ x % 2 == 0 })
+jo somme = ɖekpo(pairs, azɔwanu(acc, x) { lɛkɔ acc + x }, 0)
+
+xlɛ("Paires :")
+sin (v ɖo pairs) { xlɛ(v) }
+xlɛ("Somme des paires :", somme)   // 30</code></pre>
+      </div>
+
+      <!-- Balle rebondissante -->
+      <h2>9. Moteur de jeu — balle rebondissante</h2>
+      <p>Fenêtre graphique avec physics et affichage FPS.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>hun_flɛtɛli("Balle FonLang", 640, 480)
+
+jo bx = 320.0
+jo by = 240.0
+jo vx = 180.0
+jo vy = 140.0
+jo rayon = 20
+
+azɔwanu mise_a_jour() {
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+    jo dt = flɛ_dt()
+    bx = bx + vx * dt
+    by = by + vy * dt
+    enyi (bx - rayon < 0 || bx + rayon > flɛ_largeur()) { vx = -vx }
+    enyi (by - rayon < 0 || by + rayon > flɛ_jiyiyi())  { vy = -vy }
+}
+
+azɔwanu dessin() {
+    flɛ_couleur(20, 20, 40)
+    flɛ_kpo(toInt(bx), toInt(by), rayon, 255, 200, 50)
+    flɛ_signon("FPS: " + wekwin(toInt(flɛ_fps())), 10, 10, 200, 200, 200)
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)</code></pre>
+      </div>
+
       <div class="callout callout-info">
         <strong>Contribuer</strong>
             Ces exemples font partie du projet communautaire FonLang. Pour en proposer de nouveaux, ouvrez une issue ou une PR sur le dépôt GitHub du projet.

@@ -1,0 +1,34 @@
+// Exemple OOP — hiérarchie d'animaux
+zɛn Animal {
+    jo nom  = ""
+    jo vie  = 100
+
+    sun(n) {
+        nyɛ.nom = n
+    }
+
+    azɔwanu cri() { xlɛ("...") }
+
+    azɔwanu presenter() {
+        xlɛ("Je suis " + nyɛ.nom + " (vie: " + wekwin(nyɛ.vie) + ")")
+    }
+}
+
+zɛn Chien gu Animal {
+    sun(n) { mεjitɔ.sun(n) }
+    azɔwanu cri() { xlɛ("Waf !") }
+}
+
+zɛn Chat gu Animal {
+    sun(n) { mεjitɔ.sun(n) }
+    azɔwanu cri() { xlɛ("Miaou !") }
+}
+
+jo d = nu Chien("Rex")
+jo c = nu Chat("Minou")
+
+d.presenter()
+d.cri()
+
+c.presenter()
+c.cri()

@@ -1,0 +1,50 @@
+// Exemple moteur de jeu — détection de collision AABB
+
+hun_flɛtɛli("Collision AABB", 640, 480)
+
+// Joueur (rectangle)
+jo px = 100
+jo py = 200
+jo pw = 50
+jo ph = 50
+jo vitesse = 200
+
+// Obstacle fixe
+jo ox = 300
+jo oy = 180
+jo ow = 80
+jo oh = 80
+
+azɔwanu mise_a_jour() {
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+
+    jo dt = flɛ_dt()
+    jo nx = px
+    jo ny = py
+
+    enyi (flɛ_touche("gauche"))  { nx = nx - vitesse * dt }
+    enyi (flɛ_touche("droite"))  { nx = nx + vitesse * dt }
+    enyi (flɛ_touche("haut"))    { ny = ny - vitesse * dt }
+    enyi (flɛ_touche("bas"))     { ny = ny + vitesse * dt }
+
+    // Collision uniquement si on ne touche pas l'obstacle
+    enyi (!aabb(toInt(nx), py, pw, ph, ox, oy, ow, oh)) { px = toInt(nx) }
+    enyi (!aabb(px, toInt(ny), pw, ph, ox, oy, ow, oh)) { py = toInt(ny) }
+}
+
+azɔwanu dessin() {
+    flɛ_couleur(15, 15, 30)
+
+    // Couleur obstacle — rouge si collision, gris sinon
+    enyi (aabb(px, py, pw, ph, ox, oy, ow, oh)) {
+        flɛ_xwe(ox, oy, ow, oh, 220, 50, 50)
+    } alo {
+        flɛ_xwe(ox, oy, ow, oh, 100, 100, 100)
+    }
+
+    flɛ_xwe(px, py, pw, ph, 50, 200, 255)
+    flɛ_signon("Flèches pour déplacer", 10, 10, 200, 200, 200)
+    flɛ_signon("FPS: " + wekwin(toInt(flɛ_fps())), 10, 30, 150, 150, 150)
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)

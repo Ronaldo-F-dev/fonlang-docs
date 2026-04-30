@@ -1,0 +1,32 @@
+// Exemple moteur de jeu — balle rebondissante avec collision
+
+hun_flɛtɛli("Balle FonLang", 640, 480)
+
+jo bx = 320.0
+jo by = 240.0
+jo vx = 180.0
+jo vy = 140.0
+jo rayon = 20
+
+azɔwanu mise_a_jour() {
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+
+    jo dt = flɛ_dt()
+    bx = bx + vx * dt
+    by = by + vy * dt
+
+    jo larg = flɛ_largeur()
+    jo haut = flɛ_jiyiyi()
+
+    enyi (bx - rayon < 0 || bx + rayon > larg) { vx = -vx }
+    enyi (by - rayon < 0 || by + rayon > haut)  { vy = -vy }
+}
+
+azɔwanu dessin() {
+    flɛ_couleur(20, 20, 40)
+    flɛ_kpo(toInt(bx), toInt(by), rayon, 255, 200, 50)
+    flɛ_signon("FPS: " + wekwin(toInt(flɛ_fps())), 10, 10, 200, 200, 200)
+    flɛ_signon("Échap pour quitter", 10, 30, 120, 120, 120)
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)
