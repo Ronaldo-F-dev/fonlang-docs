@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programmation orientée objet — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Programmation orientée objet
+      </div>
+    </div>
+    <article>
+      <h1>Programmation orientée objet</h1>
+      <p class="page-subtitle">Classes, instances, héritage et méthodes statiques en FonLang.</p>
+
+      <h2>Définir une classe — <span class="kw">zɛn</span></h2>
+      <p><strong>zɛn</strong> signifie « type » ou « catégorie » en Fon. Une classe regroupe des champs et des méthodes.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Animal {
+    jo nom = "inconnu"
+
+    sun(n) {
+        nyɛ.nom = n
+    }
+
+    azɔwanu cri() {
+        xlɛ(nyɛ.nom + " fait un son")
+    }
+}</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Étymologie :</strong> <code>zɛn</code> = catégorie / type · <code>sun</code> = constructeur (« mettre en place ») · <code>nyɛ</code> = « moi » (référence à l'instance courante)
+      </div>
+
+      <h2>Instancier — <span class="kw">nu</span></h2>
+      <p><strong>nu</strong> signifie « chose » ou « objet » en Fon. Il crée une nouvelle instance de la classe.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo chat = nu Animal("Minou")
+chat.cri()   // Minou fait un son
+
+xlɛ(chat.nom)   // Minou</code></pre>
+      </div>
+
+      <h2>Constructeur — <span class="kw">sun</span></h2>
+      <p>Le constructeur <code>sun</code> est appelé automatiquement à la création de l'instance. Il reçoit les arguments passés à <code>nu Classe(...)</code>.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Point {
+    jo x = 0
+    jo y = 0
+
+    sun(px, py) {
+        nyɛ.x = px
+        nyɛ.y = py
+    }
+
+    azɔwanu afficher() {
+        xlɛf("(%d, %d)\n", nyɛ.x, nyɛ.y)
+    }
+}
+
+jo p = nu Point(3, 7)
+p.afficher()   // (3, 7)</code></pre>
+      </div>
+
+      <h2>Héritage — <span class="kw">gu</span></h2>
+      <p><strong>gu</strong> signifie « avec » ou « qui vient de » en Fon. Une classe enfant hérite de tous les champs et méthodes de son parent.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Animal {
+    jo nom = ""
+    sun(n) { nyɛ.nom = n }
+
+    azɔwanu cri() { xlɛ("...") }
+    azɔwanu presenter() { xlɛ("Je suis " + nyɛ.nom) }
+}
+
+zɛn Chien gu Animal {
+    azɔwanu cri() { xlɛ("Waf !") }
+}
+
+zɛn Chat gu Animal {
+    azɔwanu cri() { xlɛ("Miaou !") }
+}
+
+jo d = nu Chien("Rex")
+d.presenter()   // Je suis Rex
+d.cri()         // Waf !
+
+jo c = nu Chat("Minou")
+c.presenter()   // Je suis Minou  (méthode héritée)
+c.cri()         // Miaou !</code></pre>
+      </div>
+
+      <h2>Super — <span class="kw">mεjitɔ</span></h2>
+      <p><strong>mεjitɔ</strong> signifie « ancêtre » ou « parent » en Fon. Il permet d'appeler une méthode de la classe parente depuis la classe enfant.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Forme {
+    azɔwanu description() { lɛkɔ "forme" }
+}
+
+zɛn Cercle gu Forme {
+    jo rayon = 0
+    sun(r) { nyɛ.rayon = r }
+
+    azɔwanu description() {
+        jo base = mεjitɔ.description()
+        lɛkɔ base + " ronde (r=" + wekwin(nyɛ.rayon) + ")"
+    }
+}
+
+jo c = nu Cercle(5)
+xlɛ(c.description())   // forme ronde (r=5)</code></pre>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Note :</strong> <code>mεjitɔ</code> peut aussi être utilisé dans le constructeur pour appeler le constructeur parent : <code>mεjitɔ.sun(args)</code>.
+      </div>
+
+      <h2>Méthodes statiques — <span class="kw">ma_ɖyɔ</span></h2>
+      <p><strong>ma_ɖyɔ</strong> signifie « de la maison » (appartenant à la classe, pas à l'instance). Les méthodes statiques s'appellent directement sur la classe, sans instance.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Maths {
+    ma_ɖyɔ azɔwanu carre(x) { lɛkɔ x * x }
+    ma_ɖyɔ azɔwanu cube(x)  { lɛkɔ x * x * x }
+}
+
+xlɛ(Maths.carre(4))   // 16
+xlɛ(Maths.cube(3))    // 27</code></pre>
+      </div>
+
+      <h2>Exemple complet — jeu de rôle</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>zɛn Personnage {
+    jo nom  = ""
+    jo vie  = 100
+    jo force = 10
+
+    sun(n, v, f) {
+        nyɛ.nom   = n
+        nyɛ.vie   = v
+        nyɛ.force = f
+    }
+
+    azɔwanu attaquer(cible) {
+        cible.vie = cible.vie - nyɛ.force
+        xlɛ(nyɛ.nom + " attaque " + cible.nom)
+    }
+
+    azɔwanu estVivant() { lɛkɔ nyɛ.vie > 0 }
+
+    azɔwanu statut() {
+        xlɛf("%s — vie: %d\n", nyɛ.nom, nyɛ.vie)
+    }
+}
+
+zɛn Guerrier gu Personnage {
+    jo bouclier = 5
+
+    sun(n) { mεjitɔ.sun(n, 150, 20) }
+
+    azɔwanu defendre() {
+        nyɛ.vie = nyɛ.vie + nyɛ.bouclier
+        xlɛ(nyɛ.nom + " se défend !")
+    }
+}
+
+jo hero  = nu Guerrier("Tobi")
+jo ennemi = nu Personnage("Zombie", 50, 5)
+
+hero.statut()            // Tobi — vie: 150
+hero.attaquer(ennemi)    // Tobi attaque Zombie
+ennemi.statut()          // Zombie — vie: 30
+hero.defendre()          // Tobi se défend !
+hero.statut()            // Tobi — vie: 155</code></pre>
+      </div>
+
+      <h2>Résumé des mots-clés OOP</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mot-clé</th><th>Signification Fon</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>zɛn</code></td><td>catégorie / type</td><td>Définir une classe</td></tr>
+            <tr><td><code>sun</code></td><td>mettre en place</td><td>Constructeur</td></tr>
+            <tr><td><code>nyɛ</code></td><td>moi / soi</td><td>Référence à l'instance (<code>this</code>)</td></tr>
+            <tr><td><code>nu</code></td><td>chose / objet</td><td>Instancier (<code>new</code>)</td></tr>
+            <tr><td><code>gu</code></td><td>avec / venant de</td><td>Héritage (<code>extends</code>)</td></tr>
+            <tr><td><code>mεjitɔ</code></td><td>ancêtre / parent</td><td>Référence au parent (<code>super</code>)</td></tr>
+            <tr><td><code>ma_ɖyɔ</code></td><td>de la maison</td><td>Méthode statique</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a href="collections.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Collections</span></a>
+        <a href="gui.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Moteur de jeu</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

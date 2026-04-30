@@ -125,6 +125,7 @@ function renderSidebar(root) {
       <a href="${r}guide/controle.html">Structures de contrôle</a>
       <a href="${r}guide/fonctions.html">Fonctions</a>
       <a href="${r}guide/collections.html">Collections</a>
+      <a href="${r}guide/oop.html">Programmation orientée objet</a>
       <a href="${r}guide/stdlib.html">Bibliothèques standard</a>
       <a href="${r}guide/gui.html">Interface graphique</a>
 
