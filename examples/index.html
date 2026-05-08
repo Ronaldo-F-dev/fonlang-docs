@@ -637,6 +637,51 @@ azɔwanu dessin() {
 flɛtɛli_boucle(mise_a_jour, dessin)</code></pre>
       </div>
 
+      <!-- Fondations 3D -->
+      <h2>21. Fondations 3D — maths, caméra et scène</h2>
+      <p>Vecteurs 3D, quaternions, matrices TRS, caméra en orbite et graphe de scène hiérarchique.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><span class="exec-time">35ms</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Vec3 — maths de base
+jo a = v3(1, 2, 3)
+jo b = v3(4, 5, 6)
+jo somme   = v3_add(a, b)
+jo croix   = v3_croix(a, b)
+jo norm_a  = v3_norme(a)
+xlɛf("a + b = (%.2f, %.2f, %.2f)\n", somme.x,  somme.y,  somme.z)
+xlɛf("a ⊗ b = (%.2f, %.2f, %.2f)\n", croix.x,  croix.y,  croix.z)
+xlɛf("|a|   = (%.4f, %.4f, %.4f)\n", norm_a.x, norm_a.y, norm_a.z)
+
+// Quaternion — rotation 90° autour de Y
+jo q   = quat_axe(0, 1, 0, 90)
+jo rot = quat_rotate(q, v3(1, 0, 0))
+xlɛf("rotate 90°Y (1,0,0) → (%.2f, %.2f, %.2f)\n", rot.x, rot.y, rot.z)
+
+// Mat4 — transformation TRS
+jo m  = mat4_trs(v3(3, 0, 0), quat_axe(0, 1, 0, 45), v3(2, 2, 2))
+jo pt = mat4_xpt(m, v3(0, 0, 0))
+xlɛf("TRS origine → (%.2f, %.2f, %.2f)\n", pt.x, pt.y, pt.z)
+
+// Caméra en orbite
+jo cam = hun_nukún()
+cam    = nukún_orbite(cam, 45, 30, 10)
+xlɛf("Caméra pos : (%.2f, %.2f, %.2f)\n", cam.x, cam.y, cam.z)
+
+// Graphe de scène hiérarchique
+jo racine = hun_kpɔn("racine")
+jo corps  = hun_kpɔn("corps")
+jo bras_g = hun_kpɔn("bras_gauche")
+kpɔn_do(racine, corps)
+kpɔn_do(corps,  bras_g)
+kpɔn_trs(racine, 0, 0, 0,  0, 0, 0,   1, 1, 1)
+kpɔn_trs(corps,  0, 1, 0,  0, 0, 0,   1, 1, 1)
+kpɔn_trs(bras_g,-1, 0, 0,  0, 0, 20,  1, 1, 1)
+kpɔn_monde(racine)
+jo p = kpɔn_gbè("bras_gauche")
+xlɛf("bras_gauche monde : (%.2f, %.2f, %.2f)\n", p.x, p.y, p.z)
+su_scene()</code></pre>
+      </div>
+
       <div class="callout callout-info">
         <strong>Contribuer</strong>
             Ces exemples font partie du projet communautaire FonLang. Pour en proposer de nouveaux, ouvrez une issue ou une PR sur le dépôt GitHub du projet.
