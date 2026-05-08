@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLI fon — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>CLI fon
+      </div>
+    </div>
+    <article>
+      <h1>CLI <code>fon</code></h1>
+      <p class="page-subtitle">Interprétez ou compilez vos programmes FonLang depuis le terminal.</p>
+
+      <!-- Vue d'ensemble -->
+      <h2>Vue d'ensemble</h2>
+      <p>La CLI <code>fon</code> offre deux modes d'exécution :</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Commande</th><th>Mode</th><th>Vitesse</th><th>Prérequis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>fon run</code></td><td>Interpréteur</td><td>Immédiat</td><td>Go uniquement</td></tr>
+            <tr><td><code>fon build</code></td><td>Compilation native (LLVM)</td><td>Plus rapide à l'exécution</td><td>Go + clang</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- fon run -->
+      <h2><code>fon run</code> — Interpréteur</h2>
+      <p>Exécute directement un fichier <code>.fon</code> via l'interpréteur tree-walking. Aucun binaire n'est produit.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code>fon run hello.fon
+fon run examples/poo.fon</code></pre>
+      </div>
+      <div class="callout callout-info">
+        <strong>Quand utiliser <code>fon run</code> ?</strong>
+        Développement quotidien, scripts, prototypage rapide. Pas besoin de clang.
+      </div>
+
+      <!-- fon build -->
+      <h2><code>fon build</code> — Compilation native</h2>
+      <p>Compile un fichier <code>.fon</code> vers un binaire natif via LLVM IR + clang. Le binaire produit tourne sans Go installé.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Compilation simple (binaire dans le même dossier que la source)
+fon build hello.fon
+
+# Spécifier le nom du binaire de sortie
+fon build hello.fon -o /usr/local/bin/hello
+
+# Compiler puis exécuter
+fon build hello.fon -o hello &amp;&amp; ./hello</code></pre>
+      </div>
+
+      <h3>Prérequis pour <code>fon build</code></h3>
+      <ul>
+        <li><strong>clang</strong> — compilateur C/LLVM</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Linux (Debian/Ubuntu)
+sudo apt install clang
+
+# macOS
+xcode-select --install
+
+# Windows — MinGW-w64
+# https://www.mingw-w64.org/</code></pre>
+      </div>
+
+      <h3>Ce qui est pris en charge dans le binaire natif</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Fonctionnalité</th><th>Interpréteur</th><th>Binaire natif</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Types de base (nombres, chaînes, booléens)</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Tableaux et maps</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Affichage tableau/map (<code>xlɛ</code>)</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Fonctions, récursion, closures</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Boucles <code>sin</code>, <code>ɖo</code></td><td>✓</td><td>✓</td></tr>
+            <tr><td>OOP — classes, héritage, self</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Appels de méthodes dynamiques (<code>tab[i].methode()</code>)</td><td>✓</td><td>✓</td></tr>
+            <tr><td><code>xwí</code> (filter), <code>ɖekpo</code> (reduce)</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Try/catch (<code>blokpɔn/wli</code>)</td><td>✓</td><td>✓</td></tr>
+            <tr><td><code>kɛn</code> — throw sur entrée invalide</td><td>✓</td><td>✓</td></tr>
+            <tr><td>GUI / moteur de jeu</td><td>✓</td><td>Non (Ebiten requiert CGO)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- fon help -->
+      <h2><code>fon help</code> et <code>fon version</code></h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Afficher l'aide générale
+fon help
+
+# Aide sur une commande spécifique
+fon help build
+
+# Version de FonLang
+fon version</code></pre>
+      </div>
+
+      <!-- Installation globale -->
+      <h2>Installation globale</h2>
+      <p>Pour utiliser <code>fon</code> depuis n'importe quel répertoire :</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Compiler la CLI
+git clone https://github.com/OtinielGodwin/fon-programming.git
+cd fon-programming
+go build -o fon ./cmd/fon
+
+# Installer globalement
+sudo cp fon /usr/local/bin/fon
+
+# Vérifier
+fon version</code></pre>
+      </div>
+
+      <div class="page-nav">
+        <a href="demarrage.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Démarrage rapide</span></a>
+        <a href="fonctions.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Fonctions</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>

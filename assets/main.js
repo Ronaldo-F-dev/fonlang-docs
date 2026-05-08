@@ -122,6 +122,7 @@ function renderSidebar(root) {
     <nav class="sidebar-nav">
       <div class="nav-section">Guide</div>
       <a href="${r}guide/demarrage.html">Démarrage rapide</a>
+      <a href="${r}guide/cli.html">CLI fon — run &amp; build</a>
       <a href="${r}guide/controle.html">Structures de contrôle</a>
       <a href="${r}guide/fonctions.html">Fonctions</a>
       <a href="${r}guide/collections.html">Collections</a>
