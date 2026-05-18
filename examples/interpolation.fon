@@ -1,0 +1,42 @@
+// interpolation.fon — Démo de l'interpolation de chaînes FonLang
+// Exécuter : fonlang run interpolation.fon
+
+// Valeurs simples
+jo nom   = "Koku"
+jo age   = 25
+jo pi    = 3.14159
+
+xlɛ("Bonjour ${nom}, tu as ${age} ans.")
+xlɛ("Pi vaut environ ${pi}.")
+
+// Expressions dans ${ }
+jo a = 10
+jo b = 3
+xlɛ("${a} + ${b} = ${a + b}")
+xlɛ("${a} × ${b} = ${a * b}")
+xlɛ("${a} mod ${b} = ${a % b}")
+
+// Appels de fonctions
+jo phrase = "  FonLang est incroyable  "
+xlɛ("Nettoyé : '${trim(phrase)}'")
+xlɛ("Majuscules : '${wekwin_daxo("fon")}'")
+xlɛ("Longueur : ${gaɖiɖi(trim(phrase))} caractères")
+
+// Accès aux maps
+jo joueur = { "nom": "Finanfa", "score": 2048, "niveau": 7 }
+xlɛ("Joueur : ${joueur["nom"]} — Niveau ${joueur["niveau"]} — ${joueur["score"]} pts")
+
+// Tableaux
+jo fruits = ["mangue", "papaye", "avocat"]
+xlɛ("Premier fruit : ${fruits[0]}")
+xlɛ("Nombre de fruits : ${gaɖiɖi(fruits)}")
+
+// Imbriqué — expression complexe
+jo base  = 100
+jo bonus = 50
+xlɛ("Total avec bonus : ${base + bonus * 2} points")
+
+// Dans une boucle
+sin (jo i = 1; i <= 5; i++) {
+    xlɛ("Tour ${i}/5 — score : ${i * base}")
+}

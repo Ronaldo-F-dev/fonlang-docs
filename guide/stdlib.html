@@ -130,6 +130,31 @@ xlɛ(eɖyɔ("bonjour", "o", "0")) // "b0nj0ur"
 jo parties = klan("a,b,c", ",")    // ["a", "b", "c"]</code></pre>
       </div>
 
+      <h3>Interpolation de chaînes</h3>
+      <p>
+        Insérez n'importe quelle expression FonLang directement dans une chaîne avec la syntaxe
+        <code>${...}</code>. L'expression est évaluée et convertie en texte automatiquement.
+      </p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo nom = "Ronaldo"
+jo score = 1450
+
+// Concaténation classique
+xlɛ("Bonjour " + nom + " ! Score : " + wekwin(score))
+
+// Avec interpolation — plus lisible
+xlɛ("Bonjour ${nom} ! Score : ${score}")
+
+// Expressions complètes entre ${ }
+jo vies = 3
+xlɛ("Vies restantes : ${vies * 2 - 1}")   // "Vies restantes : 5"
+
+// Appel de méthode
+jo joueur = { "nom": "Koku", "pts": 88 }
+xlɛ("Joueur ${joueur["nom"]} — ${joueur["pts"]} pts")</code></pre>
+      </div>
+
       <!-- Conversions -->
       <h2>Conversions de type</h2>
       <div class="code-block">

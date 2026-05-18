@@ -682,6 +682,93 @@ xlɛf("bras_gauche monde : (%.2f, %.2f, %.2f)\n", p.x, p.y, p.z)
 su_scene()</code></pre>
       </div>
 
+      <!-- Interpolation de chaînes -->
+      <h2>Interpolation de chaînes</h2>
+      <p>La syntaxe <code>${expr}</code> insère n'importe quelle expression dans une chaîne — plus lisible qu'une concaténation manuelle.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo nom   = "Koku"
+jo score = 2048
+jo vies  = 3
+
+// Classique
+xlɛ("Joueur : " + nom + " — Score : " + wekwin(score))
+
+// Avec interpolation
+xlɛ("Joueur : ${nom} — Score : ${score} — Vies : ${vies}")
+
+// Expression complète entre ${ }
+xlɛ("Bonus total : ${score * 2 + vies * 100} pts")
+
+// Map
+jo j = { "nom": "Finanfa", "niveau": 7 }
+xlɛ("${j["nom"]} est au niveau ${j["niveau"]}")</code></pre>
+      </div>
+
+      <!-- Sprites animés + Audio -->
+      <h2>Sprites animés + Audio</h2>
+      <p>Chargement d'une spritesheet, animation frame-par-frame, effets sonores et musique de fond.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>hun_flɛtɛli("Sprite + Audio", 800, 600)
+
+// Spritesheet 8 colonnes × 4 lignes
+jo spr       = flɛ_sprite_ɖɔ("assets/personnage.png", 8, 4)
+jo musique   = flɛ_musique_ɖɔ("assets/theme.ogg")
+jo sfx_saut  = flɛ_son_ɖɔ("assets/saut.wav")
+
+flɛ_musique_volume(musique, 0.5)
+flɛ_musique_bɔ(musique)
+
+jo px = 100.0   jo py = 400.0
+jo vy = 0.0     jo sol = nugbo
+jo frame = 0    jo timer = 0.0
+
+azɔwanu mise_a_jour() {
+    jo dt = flɛ_dt()
+    enyi (flɛ_touche("gauche"))          { jo px = px - 200.0 * dt }
+    enyi (flɛ_touche("droite"))          { jo px = px + 200.0 * dt }
+    enyi (flɛ_touche_appuyee("espace") && sol) {
+        jo vy = -500.0   jo sol = nuvu
+        flɛ_son_bɔ(sfx_saut)
+    }
+    jo vy = vy + 900.0 * dt
+    jo py = py + vy * dt
+    enyi (py >= 400.0) { jo py = 400.0   jo vy = 0.0   jo sol = nugbo }
+    jo timer = timer + dt
+    enyi (timer > 0.08) { jo frame = (frame + 1) % 8   jo timer = 0.0 }
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+}
+
+azɔwanu dessin() {
+    flɛ_couleur(30, 30, 60)
+    flɛ_xwe(0, 450, 800, 20, 60, 120, 60)
+    flɛ_sprite_ɖiɖe(spr, frame, kɛn(px), kɛn(py), 2.0, 2.0)
+    flɛ_signon("FPS : ${kɛn(flɛ_fps())}  |  Espace=saut", 10, 10, 255, 255, 100)
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)</code></pre>
+      </div>
+
+      <!-- Polices personnalisées -->
+      <h2>Polices TTF personnalisées</h2>
+      <p>Chargez une police TrueType ou OpenType et affichez du texte stylisé dans vos jeux.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>hun_flɛtɛli("Fonts custom", 800, 400)
+
+jo titre = flɛ_fonte("assets/titre.ttf",  48)
+jo corps = flɛ_fonte("assets/corps.ttf",  22)
+
+azɔwanu dessin() {
+    flɛ_couleur(15, 15, 30)
+    flɛ_signon_fonte("Mì wá dó !", 100, 80,  255, 220, 50, titre)
+    flɛ_signon_fonte("Bienvenue dans FonLang.", 100, 160, 200, 200, 200, corps)
+}
+
+flɛtɛli_boucle(azɔwanu() {}, dessin)</code></pre>
+      </div>
+
       <div class="callout callout-info">
         <strong>Contribuer</strong>
             Ces exemples font partie du projet communautaire FonLang. Pour en proposer de nouveaux, ouvrez une issue ou une PR sur le dépôt GitHub du projet.

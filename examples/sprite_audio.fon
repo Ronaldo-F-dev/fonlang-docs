@@ -1,0 +1,106 @@
+// sprite_audio.fon — Démo sprites animés, audio et interpolation de chaînes
+//
+// Prérequis :
+//   assets/personnage.png  — spritesheet 8×4 frames (marche + saut)
+//   assets/theme.ogg       — musique de fond
+//   assets/saut.wav        — effet sonore saut
+//   assets/titre.ttf       — police TTF (optionnelle)
+
+hun_flɛtɛli("Démo Sprites + Audio", 800, 600)
+
+// ── Ressources ──────────────────────────────────────────────────────────────
+jo spr       = flɛ_sprite_ɖɔ("assets/personnage.png", 8, 4)
+jo musique   = flɛ_musique_ɖɔ("assets/theme.ogg")
+jo sfx_saut  = flɛ_son_ɖɔ("assets/saut.wav")
+
+flɛ_musique_volume(musique, 0.5)
+flɛ_musique_bɔ(musique)
+
+// ── État du joueur ───────────────────────────────────────────────────────────
+jo px      = 100.0
+jo py      = 400.0
+jo vy      = 0.0
+jo sol     = nugbo
+jo score   = 0
+jo vies    = 3
+
+// Animation
+jo frame   = 0
+jo timer   = 0.0
+jo droite  = nugbo
+
+// ── Update ───────────────────────────────────────────────────────────────────
+azɔwanu mise_a_jour() {
+    jo dt = flɛ_dt()
+
+    // Déplacement horizontal
+    enyi (flɛ_touche("gauche")) {
+        jo px     = px - 200.0 * dt
+        jo droite = nuvu
+    }
+    enyi (flɛ_touche("droite")) {
+        jo px     = px + 200.0 * dt
+        jo droite = nugbo
+    }
+
+    // Saut
+    enyi (flɛ_touche_appuyee("espace") && sol) {
+        jo vy  = -500.0
+        jo sol = nuvu
+        flɛ_son_bɔ(sfx_saut)
+    }
+
+    // Gravité
+    jo vy = vy + 900.0 * dt
+    jo py = py + vy * dt
+
+    // Sol
+    enyi (py >= 400.0) {
+        jo py  = 400.0
+        jo vy  = 0.0
+        jo sol = nugbo
+    }
+
+    // Limites horizontales
+    enyi (px < 0)   { jo px = 0.0 }
+    enyi (px > 750) { jo px = 750.0 }
+
+    // Animation frames : 8 frames de marche (ligne 0)
+    jo timer = timer + dt
+    enyi (timer > 0.08) {
+        jo frame = (frame + 1) % 8
+        jo timer = 0.0
+    }
+
+    // Score au fil du temps
+    jo score = score + 1
+
+    enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+}
+
+// ── Draw ──────────────────────────────────────────────────────────────────────
+azɔwanu dessin() {
+    flɛ_couleur(30, 30, 60)
+
+    // Fond — quelques plateformes
+    flɛ_xwe(0, 450, 800, 20, 60, 120, 60)
+    flɛ_xwe(200, 330, 150, 15, 80, 80, 160)
+    flɛ_xwe(500, 260, 150, 15, 80, 80, 160)
+
+    // Sprite du joueur (échelle ×2, miroir horizontal si on va à gauche)
+    enyi (droite) {
+        flɛ_sprite_ɖiɖe(spr, frame, kɛn(px), kɛn(py), 2.0, 2.0)
+    } alo {
+        flɛ_sprite_ɖiɖe(spr, frame, kɛn(px), kɛn(py), -2.0, 2.0)
+    }
+
+    // HUD avec interpolation de chaînes
+    flɛ_signon("Score : ${score}   Vies : ${vies}", 10, 10, 255, 255, 100)
+    flɛ_signon("Espace=saut   ←→=déplacement   Échap=quitter", 10, 30, 160, 160, 160)
+
+    enyi (!sol) {
+        flɛ_signon("En l'air — vy = ${kɛn(vy)}", 10, 50, 200, 150, 255)
+    }
+}
+
+flɛtɛli_boucle(mise_a_jour, dessin)

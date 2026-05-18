@@ -33,6 +33,7 @@
           <tbody>
             <tr><td><code>fon run</code></td><td>Interpréteur</td><td>Immédiat</td><td>Go uniquement</td></tr>
             <tr><td><code>fon build</code></td><td>Compilation native (LLVM)</td><td>Plus rapide à l'exécution</td><td>Go + clang</td></tr>
+            <tr><td><code>fon fmt</code></td><td>Formateur automatique</td><td>—</td><td>Go uniquement</td></tr>
           </tbody>
         </table>
       </div>
@@ -101,6 +102,32 @@ xcode-select --install
             <tr><td>GUI / moteur de jeu</td><td>✓</td><td>Non (Ebiten requiert CGO)</td></tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- fon fmt -->
+      <h2><code>fon fmt</code> — Formateur automatique</h2>
+      <p>Reformate un ou plusieurs fichiers <code>.fon</code> <strong>en place</strong> selon le style canonique FonLang :</p>
+      <ul>
+        <li>Indentation par tabulations (un niveau par paire de <code>{ }</code>).</li>
+        <li>Suppression des espaces en fin de ligne.</li>
+        <li>Conservation d'une seule ligne vide consécutive maximum.</li>
+        <li>Les accolades à l'intérieur des chaînes et des commentaires ne sont pas comptées.</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Formater un fichier
+fon fmt mon_programme.fon
+
+# Formater plusieurs fichiers d'un coup
+fon fmt src/*.fon
+
+# Vérifier si un fichier serait modifié (dry-run avec diff)
+fon fmt mon_programme.fon &amp;&amp; echo "Déjà formaté"</code></pre>
+      </div>
+      <div class="callout callout-info">
+        <strong>Workflow recommandé</strong> — Lancez <code>fon fmt</code> avant chaque commit, exactement
+        comme <code>gofmt</code> ou <code>black</code>. Les fichiers déjà au bon format ne sont pas touchés ;
+        <code>fon fmt</code> affiche uniquement les chemins des fichiers modifiés.
       </div>
 
       <!-- fon help -->
