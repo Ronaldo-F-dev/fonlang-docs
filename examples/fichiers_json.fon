@@ -2,23 +2,23 @@
 
 // Écrire un fichier texte
 jo chemin = "/tmp/fon_exemple.txt"
-wema_ecrire(chemin, "Bonjour depuis FonLang !")
-xlɛ("Fichier créé :", wema_eɖe(chemin))
+wlan_wema(chemin, "Bonjour depuis FonLang !")
+xlɛ("Fichier créé :", eɖe_wema(chemin))
 
 // Lire le fichier
-jo contenu = wema_xa(chemin)
+jo contenu = xa_wema(chemin)
 xlɛ("Contenu :", contenu)
 
 // JSON — sérialisation
 jo personne = { "nom": "Akɔ", "age": 28, "actif": nugbo }
-jo json = json_ecrire(personne)
+jo json = wlan_json(personne)
 xlɛ("JSON :", json)
 
 // JSON — désérialisation
-jo retour = json_xa(json)
+jo retour = xa_json(json)
 xlɛ("Nom :", retour["nom"])
 xlɛ("Age :", retour["age"])
 
 // Nettoyage
-wema_sunsun(chemin)
-xlɛ("Fichier supprimé :", !wema_eɖe(chemin))
+sunsun_wema(chemin)
+xlɛ("Fichier supprimé :", !eɖe_wema(chemin))

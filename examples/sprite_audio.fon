@@ -10,11 +10,11 @@ hun_flɛtɛli("Démo Sprites + Audio", 800, 600)
 
 // ── Ressources ──────────────────────────────────────────────────────────────
 jo spr       = flɛ_sprite_ɖɔ("assets/personnage.png", 8, 4)
-jo musique   = flɛ_musique_ɖɔ("assets/theme.ogg")
+jo musique   = flɛ_miziki_ɖɔ("assets/theme.ogg")
 jo sfx_saut  = flɛ_son_ɖɔ("assets/saut.wav")
 
-flɛ_musique_volume(musique, 0.5)
-flɛ_musique_bɔ(musique)
+flɛ_miziki_volume(musique, 0.5)
+flɛ_miziki_bɔ(musique)
 
 // ── État du joueur ───────────────────────────────────────────────────────────
 jo px      = 100.0

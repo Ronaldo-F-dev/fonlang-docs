@@ -210,22 +210,22 @@ flɛtɛli_boucle(mise_a_jour, dessin)  // démarrer (bloquant)</code></pre>
           </thead>
           <tbody>
             <tr>
-              <td><code>flɛ_ɖiɖe(chemin, x, y)</code></td>
+              <td><code>ɖe_yɛ(chemin, x, y)</code></td>
               <td>vɔ</td>
               <td>Charge et affiche une image PNG ou JPEG à la position (x, y). Cache automatique — pas de rechargement à chaque frame.</td>
             </tr>
             <tr>
-              <td><code>flɛ_ɖiɖe_echelle(chemin, x, y, sx, sy)</code></td>
+              <td><code>ɖe_yɛ_echelle(chemin, x, y, sx, sy)</code></td>
               <td>vɔ</td>
               <td>Affiche une image avec mise à l'échelle. <code>sx=2</code> double la largeur, <code>sy=0.5</code> divise la hauteur par deux.</td>
             </tr>
             <tr>
-              <td><code>flɛ_ɖiɖe_rotation(chemin, x, y, angle)</code></td>
+              <td><code>ɖe_yɛ_rotation(chemin, x, y, angle)</code></td>
               <td>vɔ</td>
               <td>Affiche une image tournée de <code>angle</code> degrés (sens horaire) autour de son centre.</td>
             </tr>
             <tr>
-              <td><code>flɛ_ɖiɖe_ex(chemin, x, y, sx, sy, angle)</code></td>
+              <td><code>ɖe_yɛ_ex(chemin, x, y, sx, sy, angle)</code></td>
               <td>vɔ</td>
               <td>Combinaison complète : mise à l'échelle <em>et</em> rotation en un seul appel.</td>
             </tr>
@@ -380,25 +380,25 @@ flɛtɛli_boucle(mise_a_jour, dessin)</code></pre>
           </thead>
           <tbody>
             <tr>
-              <td><code>flɛ_musique_ɖɔ(chemin)</code></td>
+              <td><code>flɛ_miziki_ɖɔ(chemin)</code></td>
               <td>wekwin</td>
               <td>kɛn (id)</td>
               <td>Charge un fichier audio comme piste musicale en boucle infinie.</td>
             </tr>
             <tr>
-              <td><code>flɛ_musique_bɔ(id)</code></td>
+              <td><code>flɛ_miziki_bɔ(id)</code></td>
               <td>kɛn</td>
               <td>vɔ</td>
               <td>Démarre ou reprend la musique.</td>
             </tr>
             <tr>
-              <td><code>flɛ_musique_su(id)</code></td>
+              <td><code>flɛ_miziki_su(id)</code></td>
               <td>kɛn</td>
               <td>vɔ</td>
-              <td>Met la musique en pause (reprend avec <code>flɛ_musique_bɔ</code>).</td>
+              <td>Met la musique en pause (reprend avec <code>flɛ_miziki_bɔ</code>).</td>
             </tr>
             <tr>
-              <td><code>flɛ_musique_volume(id, vol)</code></td>
+              <td><code>flɛ_miziki_volume(id, vol)</code></td>
               <td>kɛn, flottant</td>
               <td>vɔ</td>
               <td>Règle le volume de la piste (0.0–1.0).</td>
@@ -410,20 +410,20 @@ flɛtɛli_boucle(mise_a_jour, dessin)</code></pre>
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
         <pre><code>hun_flɛtɛli("Audio", 800, 600)
 
-jo musique = flɛ_musique_ɖɔ("assets/theme.ogg")
+jo musique = flɛ_miziki_ɖɔ("assets/theme.ogg")
 jo sfx_saut = flɛ_son_ɖɔ("assets/saut.wav")
-flɛ_musique_volume(musique, 0.6)
-flɛ_musique_bɔ(musique)   // démarrer la musique
+flɛ_miziki_volume(musique, 0.6)
+flɛ_miziki_bɔ(musique)   // démarrer la musique
 
 azɔwanu mise_a_jour() {
     enyi (flɛ_touche_appuyee("espace")) {
         flɛ_son_bɔ(sfx_saut)   // jouer l'effet saut
     }
     enyi (flɛ_touche_appuyee("p")) {
-        flɛ_musique_su(musique)  // pause musique
+        flɛ_miziki_su(musique)  // pause musique
     }
     enyi (flɛ_touche_appuyee("r")) {
-        flɛ_musique_bɔ(musique)  // reprendre
+        flɛ_miziki_bɔ(musique)  // reprendre
     }
 }
 
@@ -557,7 +557,7 @@ enyi (cercle_collide(b1x, b1y, r1, b2x, b2y, r2)) {
 
 azɔwanu dessin() {
     flɛ_couleur(0, 0, 0)
-    flɛ_ɖiɖe("fond.png", 0, 0)
+    ɖe_yɛ("fond.png", 0, 0)
     flɛ_signon("FPS: " + toInt(flɛ_fps()), 10, 10, 255, 255, 0)
 }</code></pre>
       </div>

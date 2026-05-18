@@ -89,13 +89,13 @@ sin (c ɖo parts) {
       </div>
 
       <h2>Maps associatives — <span class="kw">tɛnmɛ</span></h2>
-      <p>Les maps sont créées par les fonctions <code>json_xa</code> ou <code>http_get</code>/<code>http_post</code>.
+      <p>Les maps sont créées par les fonctions <code>xa_json</code> ou <code>http_get</code>/<code>http_post</code>.
       Une map associe des clés <em>wekwin</em> (chaînes) à des valeurs de n'importe quel type.</p>
 
       <h3>Créer une map via JSON</h3>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
-        <pre><code>jo personne = json_xa("{\"nom\":\"Akɔ\",\"age\":25}")
+        <pre><code>jo personne = xa_json("{\"nom\":\"Akɔ\",\"age\":25}")
 
 xlɛ(personne["nom"])    // Akɔ
 xlɛ(personne["age"])    // 25</code></pre>
@@ -119,7 +119,7 @@ xlɛ(reponse["corps"])    // corps de la réponse</code></pre>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
         <pre><code>jo json_str = "[{\"id\":1,\"nom\":\"Alice\"},{\"id\":2,\"nom\":\"Bob\"}]"
-jo utilisateurs = json_xa(json_str)
+jo utilisateurs = xa_json(json_str)
 
 sin (u ɖo utilisateurs) {
     xlɛf("ID %d : %s\n", u["id"], u["nom"])

@@ -23,8 +23,8 @@ hljs.registerLanguage('fon', function(hljs) {
     'egbe', 'azan', 'gan', 'nukunxwixwe',
     'nukpedonunu',
     'http_get', 'http_post',
-    'wema_xa', 'wema_ecrire', 'wema_eɖe', 'wema_sunsun',
-    'json_ecrire', 'json_xa'
+    'xa_wema', 'wlan_wema', 'eɖe_wema', 'sunsun_wema',
+    'wlan_json', 'xa_json'
   ];
 
   return {

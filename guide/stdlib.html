@@ -46,7 +46,7 @@ xlɛ(rep["corps"])    // corps JSON de la réponse
 jo rep_rapide = http_get("https://api.github.com", 5)
 
 // Requête POST
-jo corps = json_ecrire(json_xa("{\"titre\":\"test\"}"))
+jo corps = wlan_json(xa_json("{\"titre\":\"test\"}"))
 jo rep2 = http_post("https://httpbin.org/post", corps)
 xlɛ(rep2["statut"])</code></pre>
       </div>
@@ -56,19 +56,19 @@ xlɛ(rep2["statut"])</code></pre>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
         <pre><code>// Écrire un fichier
-wema_ecrire("/tmp/note.txt", "Bonjour depuis FonLang !")
+wlan_wema("/tmp/note.txt", "Bonjour depuis FonLang !")
 
 // Vérifier l'existence
-enyi (wema_eɖe("/tmp/note.txt")) {
+enyi (eɖe_wema("/tmp/note.txt")) {
     xlɛ("Le fichier existe")
 }
 
 // Lire
-jo contenu = wema_xa("/tmp/note.txt")
+jo contenu = xa_wema("/tmp/note.txt")
 xlɛ(contenu)
 
 // Supprimer
-wema_sunsun("/tmp/note.txt")</code></pre>
+sunsun_wema("/tmp/note.txt")</code></pre>
       </div>
 
       <!-- JSON -->
@@ -77,16 +77,16 @@ wema_sunsun("/tmp/note.txt")</code></pre>
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
         <pre><code>// Encodage
 jo data = [1, 2, 3]
-xlɛ(json_ecrire(data))        // "[1,2,3]"
-xlɛ(json_ecrire("bonjour"))   // "\"bonjour\""
-xlɛ(json_ecrire(nugbo))       // "true"
-xlɛ(json_ecrire(vɔ))          // "null"
+xlɛ(wlan_json(data))        // "[1,2,3]"
+xlɛ(wlan_json("bonjour"))   // "\"bonjour\""
+xlɛ(wlan_json(nugbo))       // "true"
+xlɛ(wlan_json(vɔ))          // "null"
 
 // Décodage
-jo obj   = json_xa("{\"x\":10,\"y\":20}")
+jo obj   = xa_json("{\"x\":10,\"y\":20}")
 xlɛ(obj["x"])   // 10
 
-jo liste = json_xa("[1,2,3]")
+jo liste = xa_json("[1,2,3]")
 xlɛ(liste[0])   // 1</code></pre>
       </div>
 
@@ -123,7 +123,7 @@ xlɛ(de)</code></pre>
 xlɛ(wekwin_kpɛvi("FON"))              // "fon"
 xlɛ(trim("  bonjour  "))           // "bonjour"
 xlɛ(gaɖiɖi("FonLang"))           // 7
-xlɛ(contient("FonLang", "Fon"))    // nugbo
+xlɛ(hɛn("FonLang", "Fon"))    // nugbo
 xlɛ(ebεsin("FonLang", "Fon")) // nugbo
 xlɛ(efodo("FonLang", "Lang"))  // nugbo
 xlɛ(eɖyɔ("bonjour", "o", "0")) // "b0nj0ur"
@@ -180,7 +180,7 @@ xlɛ(toBool(vɔ))     // nuvu (faux)</code></pre>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
         <pre><code>blokpɔn {
-    jo contenu = wema_xa("/tmp/config.txt")
+    jo contenu = xa_wema("/tmp/config.txt")
     xlɛ(contenu)
 } wli {
     xlɛ("Erreur :", gbogbe)

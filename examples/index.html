@@ -254,17 +254,17 @@ azɔwanu gɔnaEntree(texte) {
     jo horodatage = azan()
     jo ligne = "[" + horodatage + "] " + texte + "\n"
 
-    enyi (wema_eɖe(FICHIER)) {
-        jo existant = wema_xa(FICHIER)
-        wema_ecrire(FICHIER, existant + ligne)
+    enyi (eɖe_wema(FICHIER)) {
+        jo existant = xa_wema(FICHIER)
+        wlan_wema(FICHIER, existant + ligne)
     } alo {
-        wema_ecrire(FICHIER, ligne)
+        wlan_wema(FICHIER, ligne)
     }
 }
 
 azɔwanu afficherJournal() {
-    enyi (wema_eɖe(FICHIER)) {
-        xlɛ(wema_xa(FICHIER))
+    enyi (eɖe_wema(FICHIER)) {
+        xlɛ(xa_wema(FICHIER))
     } alo {
         xlɛ("Journal vide.")
     }
@@ -277,7 +277,7 @@ gɔnaEntree("Traitement terminé avec succès")
 xlɛ("=== Journal de bord ===")
 afficherJournal()
 
-wema_sunsun(FICHIER)
+sunsun_wema(FICHIER)
 xlɛ("Journal effacé.")</code></pre>
       </div>
 
@@ -292,7 +292,7 @@ xlɛ("Récupération des données...")
 jo rep = http_get("https://jsonplaceholder.typicode.com/todos/1")
 
 enyi (rep["statut"] == 200) {
-    jo todo = json_xa(rep["corps"])
+    jo todo = xa_json(rep["corps"])
     xlɛf("ID      : %d\n",    todo["id"])
     xlɛf("Titre   : %s\n",    todo["title"])
     xlɛf("Terminé : %s\n",    wekwin(todo["completed"]))
@@ -423,7 +423,7 @@ azɔwanu cesar(texte, decalage) {
     jo n = gaɖiɖi(texte)
     sin (jo i = 0; i < n; i++) {
         jo c = wekwin_kpɛvi(texte[i])
-        enyi (contient(ALPHABET, c)) {
+        enyi (hɛn(ALPHABET, c)) {
             jo pos = 0
             jo taille = gaɖiɖi(ALPHABET)
             sin (jo j = 0; j < taille; j++) {
@@ -456,20 +456,20 @@ xlɛf("Déchiffré : %s\n", dechiffre)</code></pre>
 jo FICHIER_AGENDA = "/tmp/agenda_fon.json"
 
 azɔwanu chargerAgenda() {
-    enyi (wema_eɖe(FICHIER_AGENDA)) {
-        jo contenu = wema_xa(FICHIER_AGENDA)
-        lɛkɔ json_xa(contenu)
+    enyi (eɖe_wema(FICHIER_AGENDA)) {
+        jo contenu = xa_wema(FICHIER_AGENDA)
+        lɛkɔ xa_json(contenu)
     }
     lɛkɔ []
 }
 
 azɔwanu sauvegarderAgenda(evenements) {
-    wema_ecrire(FICHIER_AGENDA, json_ecrire(evenements))
+    wlan_wema(FICHIER_AGENDA, wlan_json(evenements))
 }
 
 azɔwanu gɔnaEvenement(titre, date) {
     jo agenda = chargerAgenda()
-    jo ev     = json_xa("{\"titre\":\"" + titre + "\",\"date\":\"" + date + "\"}")
+    jo ev     = xa_json("{\"titre\":\"" + titre + "\",\"date\":\"" + date + "\"}")
     agenda    = gɔna(agenda, ev)
     sauvegarderAgenda(agenda)
     xlɛf("Événement ajouté : %s (%s)\n", titre, date)
@@ -496,7 +496,7 @@ xlɛ("")
 xlɛ("=== Mon Agenda ===")
 listerEvenements()
 
-wema_sunsun(FICHIER_AGENDA)</code></pre>
+sunsun_wema(FICHIER_AGENDA)</code></pre>
       </div>
 
       <!-- 16. Gestion d'erreurs -->
@@ -510,7 +510,7 @@ wema_sunsun(FICHIER_AGENDA)</code></pre>
         <pre><code>// Lecture d'un fichier avec gestion d'erreur
 azɔwanu lireFichierSurete(chemin) {
     blokpɔn {
-        jo contenu = wema_xa(chemin)
+        jo contenu = xa_wema(chemin)
         xlɛ("Contenu :", contenu)
     } wli {
         xlɛf("Impossible de lire '%s' : %s\n", chemin, gbogbe)
@@ -524,7 +524,7 @@ lireFichierSurete("/tmp/nexistepas.txt")   // affiche le message d'erreur
 blokpɔn {
     jo rep = http_get("https://jsonplaceholder.typicode.com/todos/1")
     enyi (rep["statut"] == 200) {
-        jo todo = json_xa(rep["corps"])
+        jo todo = xa_json(rep["corps"])
         xlɛf("Todo : %s\n", todo["title"])
     } alo {
         xlɛf("Statut inattendu : %d\n", rep["statut"])
@@ -714,11 +714,11 @@ xlɛ("${j["nom"]} est au niveau ${j["niveau"]}")</code></pre>
 
 // Spritesheet 8 colonnes × 4 lignes
 jo spr       = flɛ_sprite_ɖɔ("assets/personnage.png", 8, 4)
-jo musique   = flɛ_musique_ɖɔ("assets/theme.ogg")
+jo musique   = flɛ_miziki_ɖɔ("assets/theme.ogg")
 jo sfx_saut  = flɛ_son_ɖɔ("assets/saut.wav")
 
-flɛ_musique_volume(musique, 0.5)
-flɛ_musique_bɔ(musique)
+flɛ_miziki_volume(musique, 0.5)
+flɛ_miziki_bɔ(musique)
 
 jo px = 100.0   jo py = 400.0
 jo vy = 0.0     jo sol = nugbo

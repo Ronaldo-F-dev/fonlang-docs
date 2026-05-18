@@ -36,7 +36,7 @@
             <tr><td><code>KindBool</code></td><td><code>nugbo/nuvu</code></td><td><code>nugbo</code></td><td>Booléen</td></tr>
             <tr><td><code>KindNull</code></td><td><code>vɔ</code></td><td><code>vɔ</code></td><td>Valeur nulle</td></tr>
             <tr><td><code>KindArray</code></td><td><code>wemawlanxwlɛ</code></td><td><code>[1, 2, 3]</code></td><td>Tableau ordonné</td></tr>
-            <tr><td><code>KindMap</code></td><td><code>tɛnmɛ</code></td><td>via <code>json_xa</code></td><td>Map clé→valeur (string keys)</td></tr>
+            <tr><td><code>KindMap</code></td><td><code>tɛnmɛ</code></td><td>via <code>xa_json</code></td><td>Map clé→valeur (string keys)</td></tr>
           </tbody>
         </table>
       </div>
@@ -144,7 +144,7 @@ xlɛ(gaɖiɖi(arr)) // 4</code></pre>
       <h2>Map — <span class="kw">tɛnmɛ</span></h2>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
-        <pre><code>jo m = json_xa("{\"nom\":\"Akɔ\",\"age\":25,\"actif\":true}")
+        <pre><code>jo m = xa_json("{\"nom\":\"Akɔ\",\"age\":25,\"actif\":true}")
 
 xlɛ(m["nom"])     // Akɔ
 xlɛ(m["age"])     // 25

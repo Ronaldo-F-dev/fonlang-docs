@@ -116,7 +116,7 @@ xlɛ(tanjante(PI / 4))  // ~1.0</code></pre>
             <tr><td><code>wekwin_daxo</code></td><td><code>wekwin_daxo(s) → wekwin</code></td><td>Convertit en wekwin_daxos</td></tr>
             <tr><td><code>wekwin_kpɛvi</code></td><td><code>wekwin_kpɛvi(s) → wekwin</code></td><td>Convertit en wekwin_kpɛvis</td></tr>
             <tr><td><code>trim</code></td><td><code>trim(s) → wekwin</code></td><td>Supprime les espaces en début et fin</td></tr>
-            <tr><td><code>contient</code></td><td><code>contient(s, sub) → nugbo/nuvu</code></td><td>Vrai si s contient sub</td></tr>
+            <tr><td><code>contient</code></td><td><code>hɛn(s, sub) → nugbo/nuvu</code></td><td>Vrai si s contient sub</td></tr>
             <tr><td><code>ebεsin</code></td><td><code>ebεsin(s, prefix) → nugbo/nuvu</code></td><td>Vrai si s commence par prefix</td></tr>
             <tr><td><code>efodo</code></td><td><code>efodo(s, suffix) → nugbo/nuvu</code></td><td>Vrai si s finit par suffix</td></tr>
             <tr><td><code>eɖyɔ</code></td><td><code>eɖyɔ(s, ancien, nouveau) → wekwin</code></td><td>Remplace toutes les occurrences</td></tr>
@@ -183,10 +183,10 @@ xlɛ(tanjante(PI / 4))  // ~1.0</code></pre>
         <table>
           <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><code>wema_xa</code></td><td><code>wema_xa(chemin) → wekwin</code></td><td>Lit le contenu entier d'un fichier texte</td></tr>
-            <tr><td><code>wema_ecrire</code></td><td><code>wema_ecrire(chemin, contenu) → nugbo</code></td><td>Écrit ou écrase un fichier texte</td></tr>
-            <tr><td><code>wema_eɖe</code></td><td><code>wema_eɖe(chemin) → nugbo/nuvu</code></td><td>Vrai si le chemin existe</td></tr>
-            <tr><td><code>wema_sunsun</code></td><td><code>wema_sunsun(chemin) → nugbo</code></td><td>Supprime un fichier</td></tr>
+            <tr><td><code>xa_wema</code></td><td><code>xa_wema(chemin) → wekwin</code></td><td>Lit le contenu entier d'un fichier texte</td></tr>
+            <tr><td><code>wlan_wema</code></td><td><code>wlan_wema(chemin, contenu) → nugbo</code></td><td>Écrit ou écrase un fichier texte</td></tr>
+            <tr><td><code>eɖe_wema</code></td><td><code>eɖe_wema(chemin) → nugbo/nuvu</code></td><td>Vrai si le chemin existe</td></tr>
+            <tr><td><code>sunsun_wema</code></td><td><code>sunsun_wema(chemin) → nugbo</code></td><td>Supprime un fichier</td></tr>
           </tbody>
         </table>
       </div>
@@ -197,8 +197,8 @@ xlɛ(tanjante(PI / 4))  // ~1.0</code></pre>
         <table>
           <thead><tr><th>Fonction</th><th>Signature</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><code>json_ecrire</code></td><td><code>json_ecrire(val) → wekwin</code></td><td>Sérialise une valeur FonLang en JSON</td></tr>
-            <tr><td><code>json_xa</code></td><td><code>json_xa(str) → valeur</code></td><td>Désérialise du JSON en valeur FonLang. Les objets deviennent des <code>tɛnmɛ</code>.</td></tr>
+            <tr><td><code>wlan_json</code></td><td><code>wlan_json(val) → wekwin</code></td><td>Sérialise une valeur FonLang en JSON</td></tr>
+            <tr><td><code>xa_json</code></td><td><code>xa_json(str) → valeur</code></td><td>Désérialise du JSON en valeur FonLang. Les objets deviennent des <code>tɛnmɛ</code>.</td></tr>
           </tbody>
         </table>
       </div>
