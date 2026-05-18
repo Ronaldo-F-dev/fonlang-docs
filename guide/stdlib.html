@@ -200,6 +200,33 @@ kplawa "utils.fon"
 xlɛ(double(21))   // 42</code></pre>
       </div>
 
+      <!-- Spread operator -->
+      <h2>Opérateur spread (<code>...</code>)</h2>
+      <p>
+        Utilisez <code>...</code> devant un tableau à l'intérieur d'un littéral de tableau pour
+        l'étaler en place. Plusieurs spreads peuvent être combinés avec des valeurs normales.
+      </p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo a = [1, 2, 3]
+jo b = [4, 5, 6]
+
+// Fusion de deux tableaux
+jo c = [...a, ...b]          // [1, 2, 3, 4, 5, 6]
+
+// Intercaler des valeurs
+jo d = [0, ...a, 99]         // [0, 1, 2, 3, 99]
+
+// Copie d'un tableau
+jo copie = [...a]            // [1, 2, 3]  (nouvel objet)
+
+// Fusion avec traitement
+jo headers = ["id", "nom"]
+jo data    = ["score", "date"]
+jo tous    = [...headers, ...data]
+xlɛ(gaɖiɖi(tous))          // 4</code></pre>
+      </div>
+
       <!-- Tableaux — fonctions d'ordre supérieur -->
       <h2>Tableaux — ordre supérieur</h2>
       <p>

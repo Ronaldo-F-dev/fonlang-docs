@@ -34,6 +34,10 @@
             <tr><td><code>fon run</code></td><td>Interpréteur</td><td>Immédiat</td><td>Go uniquement</td></tr>
             <tr><td><code>fon build</code></td><td>Compilation native (LLVM)</td><td>Plus rapide à l'exécution</td><td>Go + clang</td></tr>
             <tr><td><code>fon fmt</code></td><td>Formateur automatique</td><td>—</td><td>Go uniquement</td></tr>
+            <tr><td><code>fon test</code></td><td>Framework de tests</td><td>—</td><td>Go uniquement</td></tr>
+            <tr><td><code>fon install</code></td><td>Gestionnaire de paquets</td><td>—</td><td>Go + git</td></tr>
+            <tr><td><code>fon list</code></td><td>Lister les paquets</td><td>—</td><td>Go uniquement</td></tr>
+            <tr><td><code>fon remove</code></td><td>Supprimer un paquet</td><td>—</td><td>Go uniquement</td></tr>
           </tbody>
         </table>
       </div>
@@ -128,6 +132,86 @@ fon fmt mon_programme.fon &amp;&amp; echo "Déjà formaté"</code></pre>
         <strong>Workflow recommandé</strong> — Lancez <code>fon fmt</code> avant chaque commit, exactement
         comme <code>gofmt</code> ou <code>black</code>. Les fichiers déjà au bon format ne sont pas touchés ;
         <code>fon fmt</code> affiche uniquement les chemins des fichiers modifiés.
+      </div>
+
+      <!-- fon test -->
+      <h2><code>fon test</code> — Framework de tests unitaires</h2>
+      <p>
+        Exécute les fichiers <code>*_test.fon</code> et rapporte chaque assertion en couleur.
+        Sans arguments, <code>fon test</code> découvre automatiquement tous les fichiers
+        <code>*_test.fon</code> dans le répertoire courant.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Builtin</th><th>Arguments</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>tɛn(cond, msg)</code></td><td>nugbo/nuvu, wekwin</td><td>Échoue si <code>cond</code> est faux.</td></tr>
+            <tr><td><code>tɛn_egal(a, b, msg)</code></td><td>tout×2, wekwin</td><td>Échoue si <code>a ≠ b</code>.</td></tr>
+            <tr><td><code>tɛn_diff(a, b, msg)</code></td><td>tout×2, wekwin</td><td>Échoue si <code>a = b</code>.</td></tr>
+            <tr><td><code>tɛn_vrai(v, msg)</code></td><td>tout, wekwin</td><td>Échoue si <code>v</code> est falsy.</td></tr>
+            <tr><td><code>tɛn_faux(v, msg)</code></td><td>tout, wekwin</td><td>Échoue si <code>v</code> est truthy.</td></tr>
+            <tr><td><code>tɛn_groupe(nom, fn)</code></td><td>wekwin, azɔwanu</td><td>Regroupe des assertions sous un label.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// math_test.fon
+
+tɛn_groupe("Addition", azɔwanu() {
+    tɛn(2 + 3 == 5, "2 + 3 = 5")
+    tɛn_egal(10 + 5, 15, "10 + 5 = 15")
+})
+
+tɛn_groupe("Tableaux", azɔwanu() {
+    jo a = [1, 2]
+    jo b = [3, 4]
+    jo c = [...a, ...b]
+    tɛn_egal(gaɖiɖi(c), 4, "spread: longueur 4")
+    tɛn_egal(c[0], 1, "premier élément")
+})</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Lancer tous les *_test.fon du répertoire courant
+fon test
+
+# Lancer des fichiers spécifiques
+fon test math_test.fon chaines_test.fon</code></pre>
+      </div>
+
+      <!-- fon install -->
+      <h2><code>fon install</code> — Gestionnaire de paquets</h2>
+      <p>
+        Installe un paquet FonLang depuis n'importe quel dépôt Git public.
+        Les paquets sont stockés dans <code>~/.fon/packages/</code>.
+        Après l'installation, <code>fon install</code> affiche le chemin
+        <code>kplawa</code> à utiliser dans votre code.
+      </p>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
+        <pre><code># Installer un paquet depuis GitHub
+fon install github.com/utilisateur/mon-paquet
+
+# Installer une version précise (tag ou branche)
+fon install github.com/utilisateur/mon-paquet@v1.2.0
+
+# Lister les paquets installés
+fon list
+
+# Supprimer un paquet
+fon remove github.com/utilisateur/mon-paquet</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Dans votre programme, après fon install :
+kplawa "/home/utilisateur/.fon/packages/github.com/utilisateur/mon-paquet/main.fon"</code></pre>
+      </div>
+      <div class="callout callout-info">
+        <strong>Prérequis</strong> — <code>git</code> doit être disponible dans le PATH.
+        Les paquets sont de simples dépôts Git contenant des fichiers <code>.fon</code>.
       </div>
 
       <!-- fon help -->
