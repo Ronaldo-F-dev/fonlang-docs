@@ -90,6 +90,25 @@ xlɛ(nugbo kpodo nuvu) // nuvu
 xlɛ(nuvu abi nugbo)   // nugbo</code></pre>
       </div>
 
+      <h2>Nullish coalescing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Opérateur</th><th>Signification</th><th>Court-circuit</th></tr></thead>
+          <tbody>
+            <tr><td><code>??</code></td><td>Retourne le côté droit si le gauche est <code>vɔ</code> / <code>vɔtɔ</code> (null)</td><td>Oui — le côté droit n'est évalué que si nécessaire</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo nom = vɔ
+xlɛ(nom ?? "Anonyme")    // "Anonyme"
+
+jo score = charger_jeu("save.json") ?? {"score": 0, "niveau": 1}
+xlɛ(score["score"])      // 0  (si aucune sauvegarde)</code></pre>
+      </div>
+
       <h2>Bit à bit</h2>
       <div class="table-wrap">
         <table>
@@ -129,7 +148,7 @@ xlɛ(64 >> 2)   // 16</code></pre>
           <thead><tr><th>Niveau</th><th>Opérateurs</th></tr></thead>
           <tbody>
             <tr><td>1 (plus faible)</td><td><em>Base</em></td></tr>
-            <tr><td>2</td><td><code>||</code> <code>abi</code></td></tr>
+            <tr><td>2</td><td><code>||</code> <code>abi</code> <code>??</code></td></tr>
             <tr><td>3</td><td><code>&amp;&amp;</code> <code>kpodo</code></td></tr>
             <tr><td>4</td><td><code>==</code> <code>!=</code></td></tr>
             <tr><td>5</td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td></tr>

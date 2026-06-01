@@ -193,6 +193,37 @@ xlɛ(double(21))   // 42</code></pre>
         </table>
       </div>
 
+      <h2>Nouvelles syntaxes (2026)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Syntaxe</th><th>Rôle</th><th>Exemple</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>??</code></td>
+              <td>Nullish coalescing — retourne la droite si gauche est <code>vɔ</code></td>
+              <td><code>jo x = nom ?? "Anonyme"</code></td>
+            </tr>
+            <tr>
+              <td><code>`...`</code></td>
+              <td>String multiligne (backtick)</td>
+              <td><code>jo s = `ligne1\nligne2`</code></td>
+            </tr>
+            <tr>
+              <td><code>jo [a, b] = arr</code></td>
+              <td>Déstructuration tableau</td>
+              <td><code>jo [x, y] = [10, 20]</code></td>
+            </tr>
+            <tr>
+              <td><code>jo {x, y} = map</code></td>
+              <td>Déstructuration map</td>
+              <td><code>jo {score} = {"score": 100}</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <h2>Programmation orientée objet (OOP)</h2>
       <p>Les classes et instances sont pleinement implémentées en FonLang.</p>
       <div class="table-wrap">

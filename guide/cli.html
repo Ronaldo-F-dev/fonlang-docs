@@ -38,6 +38,8 @@
             <tr><td><code>fon install</code></td><td>Gestionnaire de paquets</td><td>—</td><td>Go + git</td></tr>
             <tr><td><code>fon list</code></td><td>Lister les paquets</td><td>—</td><td>Go uniquement</td></tr>
             <tr><td><code>fon remove</code></td><td>Supprimer un paquet</td><td>—</td><td>Go uniquement</td></tr>
+            <tr><td><code>fon upgrade</code></td><td>Mettre à jour tous les paquets</td><td>—</td><td>Go + git</td></tr>
+            <tr><td><code>fon info</code></td><td>Détails d'un paquet installé</td><td>—</td><td>Go + git</td></tr>
           </tbody>
         </table>
       </div>
@@ -205,7 +207,13 @@ fon install github.com/utilisateur/mon-paquet@v1.2.0
 fon list
 
 # Supprimer un paquet
-fon remove github.com/utilisateur/mon-paquet</code></pre>
+fon remove github.com/utilisateur/mon-paquet
+
+# Mettre à jour tous les paquets installés
+fon upgrade
+
+# Afficher les détails d'un paquet (commit, fichiers .fon)
+fon info github.com/utilisateur/mon-paquet</code></pre>
       </div>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>

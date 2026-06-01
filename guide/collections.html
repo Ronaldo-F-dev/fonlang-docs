@@ -163,6 +163,42 @@ xlɛ(concatene)   // " llvm fon-lang rust"</code></pre>
         pour un contrôle total — les deux approches coexistent.
       </div>
 
+      <h2>Déstructuration</h2>
+      <p>Extrait plusieurs valeurs d'un tableau ou d'une map en une seule ligne.</p>
+
+      <h3>Déstructuration de tableau</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo [a, b, c] = [10, 20, 30]
+xlɛ(a)   // 10
+xlɛ(b)   // 20
+xlɛ(c)   // 30
+
+// Si le tableau est plus court, les variables manquantes reçoivent vɔ
+jo [x, y] = [5]
+// x = 5, y = vɔ</code></pre>
+      </div>
+
+      <h3>Déstructuration de map</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo joueur = {"nom": "Behanzin", "vie": 3, "score": 500}
+jo {nom, vie, score} = joueur
+xlɛ(nom)    // "Behanzin"
+xlɛ(vie)    // 3
+xlɛ(score)  // 500
+
+// Clé absente → vɔ
+jo {niveau} = joueur
+// niveau = vɔ (clé inexistante)</code></pre>
+      </div>
+
+      <div class="info-box">
+        <strong>Utilisation typique</strong><br>
+        La déstructuration est idéale pour unpacker les données retournées par
+        <code>charger_jeu</code>, les réponses HTTP, ou les paramètres de fonctions complexes.
+      </div>
+
       <div class="page-nav">
         <a href="fonctions.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Fonctions</span></a>
         <a href="oop.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Programmation orientée objet</span></a>
