@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D God Hand — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Guide<span>/</span>Moteur 3D God Hand
+      </div>
+    </div>
+    <article>
+      <h1>Moteur 3D — Style God Hand</h1>
+      <p class="page-subtitle">Toon shading, particules de combat, hitboxes, effets écran et animation blending.</p>
+
+      <h2>Rendu en une ligne</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Active le style God Hand complet en une seule ligne
+flɛ3d_toon_preset_godhand()
+
+// Contenu : 4 bandes de lumière, contour noir, rim light bleuté, specular dur</code></pre>
+      </div>
+
+      <h2>Toon / Cell Shading</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Fonction</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>flɛ3d_toon(bandes)</code></td><td>Active le cell-shading avec N bandes de lumière (ex: 4)</td></tr>
+          <tr><td><code>flɛ3d_toon_off()</code></td><td>Désactive le cell-shading</td></tr>
+          <tr><td><code>flɛ3d_contour(w, r, g, b)</code></td><td>Contour noir (épaisseur en world units, couleur)</td></tr>
+          <tr><td><code>flɛ3d_rim(intensite, r, g, b)</code></td><td>Rim lighting (halo sur les bords)</td></tr>
+          <tr><td><code>flɛ3d_spec(coupure, intensite)</code></td><td>Spéculaire dur (cutoff ~0.9 = highlight serré)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Particules 3D — Presets de combat</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Builtin</th><th>Effet</th></tr></thead>
+        <tbody>
+          <tr><td><code>flɛ3d_ps_etincelles(x,y,z)</code></td><td>Étincelles dorées (impact poing/épée)</td></tr>
+          <tr><td><code>flɛ3d_ps_sang(x,y,z)</code></td><td>Éclaboussures rouges</td></tr>
+          <tr><td><code>flɛ3d_ps_poussiere(x,y,z)</code></td><td>Nuage de poussière (atterrissage, dash)</td></tr>
+          <tr><td><code>flɛ3d_ps_feu(x,y,z)</code></td><td>Flammes continues</td></tr>
+          <tr><td><code>flɛ3d_ps_explosion(x,y,z)</code></td><td>Grosse explosion de particules</td></tr>
+        </tbody>
+      </table></div>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Créer des étincelles à la position du hit
+jo spark = flɛ3d_ps_etincelles(hit_x, hit_y, hit_z)
+
+// Dans la boucle :
+flɛ3d_ps_update(dt)         // simuler
+flɛ3d_ps_kpo_tout(cam)      // dessiner</code></pre>
+      </div>
+
+      <h2>Hitboxes de combat</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Hurtbox corps (type 0 = hurtbox)
+jo body = flɛ3d_hitbox_capsule("joueur", 0,
+    0.0, 0.1, 0.0,  0.0, 1.7, 0.0,  0.35)
+
+// Hitbox attaque (type 1 = attack)
+jo fist = flɛ3d_hitbox_sphere("joueur", 1, 0.8, 1.2, 0.0, 0.4)
+flɛ3d_hitbox_damage(fist, 25.0, 3.0, 2.5, 0.0, 12)
+
+// Pendant le swing
+flɛ3d_hitbox_ɖiɖe(fist, nugbo)
+flɛ3d_hitbox_sɔ(fist, px, 1.2, 0.0)  // suivre le poing
+
+// Détecter les hits
+jo hits = flɛ3d_hitbox_check()
+sin (jo h ɖo hits) {
+    flɛ3d_eclair_jaune(2)          // flash jaune = coup porté
+    flɛ3d_xoxo3d_coup()            // screen shake
+    jo spark = flɛ3d_ps_etincelles(h["hitX"], h["hitY"], h["hitZ"])
+}</code></pre>
+      </div>
+
+      <h2>Animation Blending</h2>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo sm = flɛ3d_sm_ɖɔ()
+flɛ3d_sm_etat(sm, "idle",    clip_idle,  nugbo, 0.2)
+flɛ3d_sm_etat(sm, "attaque", clip_atk,   nuvu,  0.05)
+
+enyi (appuie_attaque) { flɛ3d_sm_aller(sm, "attaque") }
+
+flɛ3d_sm_update(sm, dt)
+jo rot = flɛ3d_sm_xa(sm, "bras.ry")</code></pre>
+      </div>
+
+      <h2>Effets écran</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Builtin</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td><code>flɛ3d_eclair_blanc(frames)</code></td><td>Flash blanc — coup reçu</td></tr>
+          <tr><td><code>flɛ3d_eclair_rouge(frames)</code></td><td>Flash rouge — dégâts importants</td></tr>
+          <tr><td><code>flɛ3d_eclair_jaune(frames)</code></td><td>Flash jaune — coup porté sur ennemi</td></tr>
+          <tr><td><code>flɛ3d_xoxo3d_coup()</code></td><td>Screen shake prédéfini pour un coup</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="page-nav">
+        <a href="oop.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">OOP</span></a>
+        <a href="collections.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Collections</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>
