@@ -1,0 +1,121 @@
+// ══════════════════════════════════════════════════════════════════════════
+// behanzin_ps2.fon — Démo Phase 3.5 · God Hand / PS2 Quality
+//
+// Démontre :
+//   - flɛ3d_postfx_godhand()  → bloom chaud + color grading
+//   - flɛ3d_toon_preset_godhand() → cell shading 4 bandes
+//   - flɛ3d_ombre_ɖɔ / flɛ3d_ombre_sol → ombre projetée au sol (style PS2)
+//   - flɛ3d_mesh_alpha → fumée semi-transparente
+//   - flɛ3d_bloom / flɛ3d_colorgrade → réglage fin des post-effets
+//   - flɛ3d_mesh_lod → niveau de détail automatique
+//   - Animation squelettique + rotation toon
+// ══════════════════════════════════════════════════════════════════════════
+
+hun_flɛtɛli("Béhanzin — PS2 Quality", 960, 600)
+
+// ── Caméra ───────────────────────────────────────────────────────────────
+jo cam = hun_nukún()
+nukún_position(cam, v3(0.0, 3.5, 9.0))
+nukún_cible(cam, v3(0.0, 1.2, 0.0))
+
+// ── Chargement du modèle avec squelette ──────────────────────────────────
+jo model   = flɛ3d_glb_skinned("behanzin.glb")
+jo mesh_id = model["meshes"][0]
+jo skel_id = model["skel_id"]
+
+// ── LOD : basse résolution au-delà de 18 unités ──────────────────────────
+jo mesh_ld = flɛ3d_gltf("behanzin_ld.gltf")
+flɛ3d_mesh_lod(mesh_id, mesh_ld, 18.0)
+
+// ── Sol et décor ─────────────────────────────────────────────────────────
+jo sol     = flɛ3d_plan(12.0, 12.0)
+jo tex_sol = flɛ3d_texture("sol_pierre.png")
+flɛ3d_mesh_tex(sol, tex_sol)
+
+// ── Fumée semi-transparente (effet de brume au sol) ───────────────────────
+jo fumee = flɛ3d_sphere(1.2, 6)
+flɛ3d_mesh_couleur(fumee, 180, 180, 190)
+flɛ3d_mesh_alpha(fumee, 0.30)
+
+// ── Éclairage ────────────────────────────────────────────────────────────
+flɛ3d_ambiant(0.08, 0.08, 0.12)
+flɛ3d_lumiere(v3(-0.5, -1.0, -0.3), 1.0, 0.95, 0.85)
+
+// ── Style God Hand ────────────────────────────────────────────────────────
+// Toon shading (4 bandes de lumière, contour noir, rim bleuté)
+flɛ3d_toon_preset_godhand()
+
+// Post-processing (bloom chaud + contraste + teinte rouge-orange)
+flɛ3d_postfx_godhand()
+
+// Réglage fin optionnel (décommenter pour personnaliser)
+// flɛ3d_bloom(nugbo, 0.70, 0.45, 10)
+// flɛ3d_colorgrade(1.05, 1.15, 1.10, 0.15)
+// flɛ3d_teinte(0.03, 0.0, -0.03)
+
+// ── Shadow map (ombre projetée au sol, style PS2 sans depth buffer) ───────
+flɛ3d_ombre_ɖɔ(512)
+flɛ3d_ombre_lumiere(-0.5, -1.0, -0.3,  0.0, 0.0, 0.0,  8.0)
+
+// ── Particules de feu (torche ambiante) ───────────────────────────────────
+jo feu_gauche = flɛ3d_ps_feu(-3.0, 1.5, -2.0)
+jo feu_droite = flɛ3d_ps_feu( 3.0, 1.5, -2.0)
+
+// ── Variables de boucle ───────────────────────────────────────────────────
+jo t       = 0.0
+jo brume_y = 0.0
+
+// ══════════════════════════════════════════════════════════════════════════
+// Boucle principale
+// ══════════════════════════════════════════════════════════════════════════
+flɛ_boucle(
+    azɔwanu(dt) {
+
+        t       = t + dt
+        brume_y = sinus(t * 0.4) * 0.08   // légère oscillation verticale
+
+        // — Animation squelettique : hanche tourne lentement (rotation Y) ——
+        flɛ3d_skel_pose(skel_id, 0,
+            mat4_trs(v3(0.0, 0.0, 0.0),
+                     quat_euler(0.0, t * 0.6, 0.0),
+                     v3(1.0, 1.0, 1.0)))
+        flɛ3d_skel_update(skel_id)
+
+        // — Shadow pass avant le rendu principal ——————————————————————————
+        flɛ3d_ombre_rendu(mesh_id, "behanzin")
+        // Ombre plate au sol y = 0, direction lumière identique
+        flɛ3d_ombre_sol(mesh_id, "behanzin", -0.5, -1.0, -0.3,  0.0,  cam)
+
+        // — Rendu 3D —————————————————————————————————————————————————————
+        flɛ3d_effacer(0.04, 0.04, 0.09)
+
+        // Sol
+        flɛ3d_dessin_trs(sol, cam, v3(0.0, 0.0, 0.0), quat_id(), v3(1.0, 1.0, 1.0))
+
+        // Personnage avec skinning CPU + toon shading
+        flɛ3d_skel_kpo(mesh_id, skel_id, "behanzin", cam, 1.0, 0.9, 0.8)
+
+        // Fumée semi-transparente au pied du personnage
+        flɛ3d_dessin_trs(fumee, cam,
+            v3(0.0, brume_y, 0.0),
+            quat_euler(0.0, t * 0.2, 0.0),
+            v3(1.5, 0.5, 1.5))
+
+        // Particules (feu des torches)
+        flɛ3d_ps_update(dt)
+        flɛ3d_ps_kpo_tout(cam)
+
+        // Soumettre le framebuffer (bloom + color grading appliqués ici)
+        flɛ3d_rendu(cam)
+
+        // — HUD FPS ——————————————————————————————————————————————————————
+        jo stats = flɛ3d_stats()
+        flɛ_signon(
+            "FPS: ${kɛn(stats["fps"])}  tris: ${stats["triangles"]}  Phase 3.5",
+            10, 10, 220, 220, 80)
+
+        // Quitter avec Échap
+        enyi (flɛ_touche("echap")) { su_flɛtɛli() }
+    },
+    azɔwanu() { }   // draw géré par le renderer
+)

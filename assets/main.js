@@ -135,6 +135,7 @@ function renderSidebar(root) {
       <a href="${r}reference/types.html">Types de données</a>
       <a href="${r}reference/operateurs.html">Opérateurs</a>
       <a href="${r}reference/stdlib.html">Stdlib — référence</a>
+      <a href="${r}reference/engine3d_ps2.html">Moteur 3D — Phase 3.5</a>
 
       <div class="nav-section">Exemples</div>
       <a href="${r}examples/index.html">Galerie d'exemples</a>

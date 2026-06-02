@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moteur 3D Phase 3.5 — PS2 / God Hand — FonLang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/mocha.min.css">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"></aside>
+  <div class="content">
+    <div class="topbar">
+      <button class="topbar-menu-btn" aria-label="Menu">&#9776;</button>
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">FonLang</a><span>/</span>Référence<span>/</span>Moteur 3D — Phase 3.5
+      </div>
+    </div>
+    <article>
+      <h1>Moteur 3D — Phase 3.5 <span style="font-size:0.55em;font-weight:500;color:var(--accent);vertical-align:middle;margin-left:.5rem;">God Hand / PS2 Quality</span></h1>
+      <p class="page-subtitle">
+        Toutes les APIs avancées introduites en Phase 3.5 : animation squelettique, shadow maps,
+        normal mapping, transparence, LOD, bloom et color grading.
+        Ces builtins s'ajoutent aux fondations 3D des phases 3.0–3.4.
+      </p>
+
+      <div class="callout callout-info">
+        <strong>Prérequis</strong>
+        Les APIs de base (scène, caméra, rendu, éclairage) sont décrites dans la référence
+        <a href="stdlib.html">Stdlib</a>. Cette page documente uniquement les extensions Phase 3.5.
+      </div>
+
+      <!-- ── Skeletal Animation ───────────────────────────────────────── -->
+      <h2>Animation squelettique — GPU Skinning</h2>
+      <p>
+        Charge un modèle <strong>.glb</strong> exporté depuis Blender avec squelette, puis
+        déforme le mesh en temps réel en appliquant des matrices de pose aux os.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_glb_skinned</code></td>
+              <td><code>flɛ3d_glb_skinned(chemin) → tɛnmɛ</code></td>
+              <td>
+                Charge un fichier <code>.glb</code> avec squelette.
+                Retourne <code>{"meshes": [...], "skel_id": id}</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_skel_ɖɔ</code></td>
+              <td><code>flɛ3d_skel_ɖɔ() → kɛn</code></td>
+              <td>Crée un squelette vide. Retourne l'identifiant.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_skel_os</code></td>
+              <td><code>flɛ3d_skel_os(id, nom, parent, ibm)</code></td>
+              <td>
+                Ajoute un os au squelette <code>id</code>.
+                <code>parent</code> est l'index de l'os parent (−1 pour la racine).
+                <code>ibm</code> est la <em>inverse bind matrix</em> (tableau de 16 flottants).
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_skel_pose</code></td>
+              <td><code>flɛ3d_skel_pose(id, joint_idx, mat4)</code></td>
+              <td>Définit la matrice de pose locale de l'os <code>joint_idx</code>.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_skel_update</code></td>
+              <td><code>flɛ3d_skel_update(id)</code></td>
+              <td>Recalcule toutes les poses mondiales. À appeler après chaque modification de pose.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_skel_kpo</code></td>
+              <td><code>flɛ3d_skel_kpo(mesh, skel, noeud, cam, r, g, b)</code></td>
+              <td>
+                Dessine <code>mesh</code> avec skinning CPU depuis le noeud de scène <code>noeud</code>.
+                <code>r, g, b</code> : teinte multiplicative (1.0 = neutre).
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_skel_sunsun</code></td>
+              <td><code>flɛ3d_skel_sunsun(id)</code></td>
+              <td>Libère la mémoire du squelette.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Charger un personnage avec squelette
+jo model   = flɛ3d_glb_skinned("behanzin.glb")
+jo mesh_id = model["meshes"][0]
+jo skel_id = model["skel_id"]
+
+// Faire tourner l'os de la hanche (index 0) selon le temps t
+flɛ3d_skel_pose(skel_id, 0, mat4_trs(v3(0,0,0), quat_euler(0, t, 0), v3(1,1,1)))
+flɛ3d_skel_update(skel_id)
+
+// Dessiner avec skinning
+flɛ3d_skel_kpo(mesh_id, skel_id, "behanzin", cam, 1.0, 0.9, 0.8)</code></pre>
+      </div>
+
+      <!-- ── Shadow Maps ──────────────────────────────────────────────── -->
+      <h2>Shadow Maps</h2>
+      <p>
+        Deux modes d'ombre sont disponibles : une <strong>shadow map réelle</strong> (passe de
+        profondeur) et une <strong>ombre projetée au sol</strong> style PS2, sans depth buffer,
+        plus rapide et adaptée aux jeux d'action.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_ombre_ɖɔ</code></td>
+              <td><code>flɛ3d_ombre_ɖɔ(résolution)</code></td>
+              <td>
+                Initialise la shadow map. <code>résolution</code> : taille en pixels
+                (ex. <code>512</code>, <code>1024</code>, <code>2048</code>).
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ombre_lumiere</code></td>
+              <td><code>flɛ3d_ombre_lumiere(dx, dy, dz, cx, cy, cz, portée)</code></td>
+              <td>
+                Configure la lumière directionnelle pour la shadow map.
+                <code>dx/dy/dz</code> : direction, <code>cx/cy/cz</code> : centre, <code>portée</code> : rayon.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ombre_rendu</code></td>
+              <td><code>flɛ3d_ombre_rendu(mesh_id, noeud)</code></td>
+              <td>
+                Passe de profondeur — rend <code>mesh_id</code> dans la shadow map.
+                À appeler <strong>avant</strong> le rendu principal.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ombre_sol</code></td>
+              <td><code>flɛ3d_ombre_sol(mesh_id, noeud, dx, dy, dz, y_sol, cam)</code></td>
+              <td>
+                Projette une ombre plate sur le plan <code>y = y_sol</code> (style PS2).
+                Pas de depth buffer nécessaire.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ombre_test</code></td>
+              <td><code>flɛ3d_ombre_test(x, y, z) → nugbo/nuvu</code></td>
+              <td>Retourne <code>nugbo</code> si le point <code>(x, y, z)</code> est dans l'ombre.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Initialiser la shadow map (512×512)
+flɛ3d_ombre_ɖɔ(512)
+flɛ3d_ombre_lumiere(-0.5, -1.0, -0.3,  0.0, 0.0, 0.0,  8.0)
+
+// Dans la boucle de jeu :
+
+// 1) Passe de profondeur
+flɛ3d_ombre_rendu(mesh_id, "noeud_perso")
+
+// 2) Ombre plate au sol (y = 0)
+flɛ3d_ombre_sol(mesh_id, "noeud_perso", -0.5, -1.0, -0.3,  0.0,  cam)
+
+// 3) Vérifier l'ombre sur un point
+jo dans_ombre = flɛ3d_ombre_test(px, py, pz)
+enyi (dans_ombre) {
+    xlɛ("Le point est dans l'ombre")
+}</code></pre>
+      </div>
+
+      <!-- ── Normal Mapping ──────────────────────────────────────────── -->
+      <h2>Normal Mapping</h2>
+      <p>
+        Ajoute du relief visuel à un mesh sans augmenter le nombre de polygones, en lisant
+        les normales depuis une texture dédiée.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_mesh_normalmap</code></td>
+              <td><code>flɛ3d_mesh_normalmap(mesh_id, tex_id)</code></td>
+              <td>
+                Attache une normal map au mesh. Les tangentes sont calculées automatiquement
+                si le mesh possède des UVs et des normales.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Charger la normal map (canal RVB = normales en espace tangent)
+jo nm = flɛ3d_tex("mur_normal.png")
+
+// L'attacher au mesh mur
+jo mur = flɛ3d_plan(4.0, 4.0)
+flɛ3d_mesh_normalmap(mur, nm)
+
+// Le rendu utilisera automatiquement la normal map
+flɛ3d_dessin_trs(mur, cam, v3(0, 2, -5), quat_id(), v3(1,1,1))</code></pre>
+      </div>
+
+      <!-- ── Alpha Blending ──────────────────────────────────────────── -->
+      <h2>Alpha Blending — Transparence</h2>
+      <p>
+        Rend un mesh semi-transparent. Les meshes avec <code>alphaMode=BLEND</code> dans un
+        fichier GLB sont automatiquement transparents à l'import.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_mesh_alpha</code></td>
+              <td><code>flɛ3d_mesh_alpha(mesh_id, alpha)</code></td>
+              <td>
+                Définit l'opacité du mesh. <code>alpha</code> : flottant de
+                <code>0.0</code> (invisible) à <code>1.0</code> (opaque).
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo fumee = flɛ3d_sphere(0.8, 8)
+flɛ3d_mesh_couleur(fumee, 200, 200, 200)
+
+// Rendre la fumée à 35% d'opacité
+flɛ3d_mesh_alpha(fumee, 0.35)
+
+// Le mesh GLB avec alphaMode=BLEND est transparent automatiquement
+jo vitre = flɛ3d_glb_skinned("vitre.glb")
+// → déjà semi-transparent à l'import</code></pre>
+      </div>
+
+      <!-- ── LOD ─────────────────────────────────────────────────────── -->
+      <h2>LOD — Level of Detail</h2>
+      <p>
+        Sélectionne automatiquement un mesh basse résolution lorsque le personnage ou l'objet
+        dépasse un seuil de distance caméra. Maintient le framerate sur les grandes scènes.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_mesh_lod</code></td>
+              <td><code>flɛ3d_mesh_lod(mesh_hd, mesh_ld, distance)</code></td>
+              <td>
+                Enregistre la paire LOD. Au-delà de <code>distance</code> unités de la caméra,
+                <code>flɛ3d_dessin_trs</code> utilise automatiquement <code>mesh_ld</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>Astuce</strong>
+        Appelez <code>flɛ3d_mesh_lod</code> une seule fois à l'initialisation.
+        Ensuite utilisez <code>flɛ3d_dessin_trs(mesh_hd, ...)</code> normalement :
+        le moteur choisit le bon niveau selon la distance.
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Deux résolutions du même arbre
+jo arbre_hd = flɛ3d_gltf("arbre_hd.gltf")   // ~2000 triangles
+jo arbre_ld = flɛ3d_gltf("arbre_ld.gltf")   // ~200  triangles
+
+// Au-delà de 20 unités : bascule sur le LD
+flɛ3d_mesh_lod(arbre_hd, arbre_ld, 20.0)
+
+// Dans la boucle — aucun changement de code
+flɛ3d_dessin_trs(arbre_hd, cam, pos, rot, scl)</code></pre>
+      </div>
+
+      <!-- ── Post-Processing ─────────────────────────────────────────── -->
+      <h2>Post-Processing — Bloom &amp; Color Grading</h2>
+      <p>
+        Effets appliqués sur le framebuffer final. Deux presets prêts à l'emploi
+        reproduisent l'esthétique des jeux PS2 et de <em>God Hand</em>.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_postfx_godhand</code></td>
+              <td><code>flɛ3d_postfx_godhand()</code></td>
+              <td>
+                Preset God Hand — bloom chaud, contraste élevé, légère teinte rouge-orange.
+                Activation en une ligne.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_postfx_ps2</code></td>
+              <td><code>flɛ3d_postfx_ps2()</code></td>
+              <td>
+                Preset cinématique PS2 — bloom doux, couleurs légèrement désaturées,
+                vignette prononcée.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_postfx_off</code></td>
+              <td><code>flɛ3d_postfx_off()</code></td>
+              <td>Désactive tous les effets post-processing.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_bloom</code></td>
+              <td><code>flɛ3d_bloom(actif, seuil, intensite, rayon)</code></td>
+              <td>
+                Configure le bloom manuellement.
+                <code>seuil</code> : luminosité minimale pour briller (0–1).
+                <code>intensite</code> : force de l'effet.
+                <code>rayon</code> : rayon de diffusion (pixels).
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_colorgrade</code></td>
+              <td><code>flɛ3d_colorgrade(lum, cont, sat, vignette)</code></td>
+              <td>
+                Color grading : <code>lum</code> (luminosité), <code>cont</code> (contraste),
+                <code>sat</code> (saturation), <code>vignette</code> (assombrissement des bords, 0–1).
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_teinte</code></td>
+              <td><code>flɛ3d_teinte(r, g, b)</code></td>
+              <td>Ajoute une teinte additive sur le rendu final. Valeurs de −1 à +1.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Preset tout-en-un
+flɛ3d_postfx_godhand()
+
+// Ou configuration manuelle équivalente :
+flɛ3d_bloom(nugbo, 0.70, 0.45, 10)       // bloom actif, seuil 70%, intensité 45%, rayon 10px
+flɛ3d_colorgrade(1.05, 1.15, 1.10, 0.15) // légère luminosité, contraste fort, sat +10%, vignette 15%
+flɛ3d_teinte(0.03, 0.0, -0.03)           // teinte rouge-chaud
+
+// Désactiver entre deux scènes
+flɛ3d_postfx_off()</code></pre>
+      </div>
+
+      <!-- ── Toon + Rim ─────────────────────────────────────────────── -->
+      <h2>Toon / Cell Shading — Style God Hand</h2>
+      <p>
+        Quantise l'éclairage en bandes discrètes et ajoute des contours noirs — signature
+        visuelle des jeux de combat stylisés.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_toon_preset_godhand</code></td>
+              <td><code>flɛ3d_toon_preset_godhand()</code></td>
+              <td>Active le toon shading avec les réglages God Hand (4 bandes, contour 0.018).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_toon</code></td>
+              <td><code>flɛ3d_toon(bandes)</code></td>
+              <td>Définit le nombre de bandes de lumière discrètes (2 à 8).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_contour</code></td>
+              <td><code>flɛ3d_contour(épaisseur, r, g, b)</code></td>
+              <td>Configure le contour (back-face gonflé). Couleur en 0–1.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_rim</code></td>
+              <td><code>flɛ3d_rim(intensite, r, g, b)</code></td>
+              <td>Rim lighting coloré sur les bords du personnage.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_spec</code></td>
+              <td><code>flɛ3d_spec(cutoff, intensite)</code></td>
+              <td>Specular dur (coupure franche, style cartoon).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_toon_off</code></td>
+              <td><code>flɛ3d_toon_off()</code></td>
+              <td>Désactive le toon shading et revient au rendu Gouraud standard.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Activer le style God Hand
+flɛ3d_toon_preset_godhand()
+
+// Ou configurer manuellement
+flɛ3d_toon(4)                           // 4 bandes de lumière
+flɛ3d_contour(0.018, 0.03, 0.03, 0.03) // contour noir quasi-invisible
+flɛ3d_rim(0.4, 0.55, 0.75, 1.0)        // rim bleuté
+flɛ3d_spec(0.90, 0.85)                 // specular dur (cutoff 90%, intensité 85%)</code></pre>
+      </div>
+
+      <!-- ── Particules ─────────────────────────────────────────────── -->
+      <h2>Particules 3D — Effets de combat</h2>
+      <p>
+        Système de particules intégré avec des presets pour les effets courants de jeu d'action.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_ps_etincelles</code></td>
+              <td><code>flɛ3d_ps_etincelles(x, y, z) → kɛn</code></td>
+              <td>Burst d'étincelles (impact coup de poing ou épée).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_sang</code></td>
+              <td><code>flɛ3d_ps_sang(x, y, z) → kɛn</code></td>
+              <td>Effusion de sang.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_poussiere</code></td>
+              <td><code>flɛ3d_ps_poussiere(x, y, z) → kɛn</code></td>
+              <td>Nuage de poussière (atterrissage, dash).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_feu</code></td>
+              <td><code>flɛ3d_ps_feu(x, y, z) → kɛn</code></td>
+              <td>Flamme continue.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_explosion</code></td>
+              <td><code>flɛ3d_ps_explosion(x, y, z) → kɛn</code></td>
+              <td>Explosion sphérique.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_ɖɔ</code></td>
+              <td><code>flɛ3d_ps_ɖɔ(max) → kɛn</code></td>
+              <td>Crée un système de particules custom avec <code>max</code> particules simultanées.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_sɔ</code></td>
+              <td><code>flɛ3d_ps_sɔ(ps, x, y, z)</code></td>
+              <td>Positionne l'émetteur.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_bɔ</code></td>
+              <td><code>flɛ3d_ps_bɔ(ps, n)</code></td>
+              <td>Émet un burst de <code>n</code> particules.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_update</code></td>
+              <td><code>flɛ3d_ps_update(dt)</code></td>
+              <td>Simule tous les systèmes de particules actifs (à appeler dans la boucle).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_kpo_tout</code></td>
+              <td><code>flɛ3d_ps_kpo_tout(cam)</code></td>
+              <td>Dessine toutes les particules visibles.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_ps_sunsun</code></td>
+              <td><code>flɛ3d_ps_sunsun(ps)</code></td>
+              <td>Libère la mémoire d'un système de particules.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Impact de coup : étincelles à la position de contact
+jo spark = flɛ3d_ps_etincelles(px, py, pz)
+
+// Feu sur une torche
+jo torche = flɛ3d_ps_feu(2.0, 1.5, 0.0)
+
+// Dans la boucle de jeu
+flɛ3d_ps_update(dt)
+flɛ3d_ps_kpo_tout(cam)</code></pre>
+      </div>
+
+      <!-- ── Hitboxes ────────────────────────────────────────────────── -->
+      <h2>Hitboxes de combat</h2>
+      <p>
+        Système de hitboxes pour les jeux de combat : <code>hurtbox</code> (zone vulnérable),
+        <code>attaque</code>, <code>blocage</code> et <code>saisie</code>.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Type</th><th>Valeur</th><th>Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>hurtbox</code></td><td><code>0</code></td><td>Zone vulnérable du personnage</td></tr>
+            <tr><td><code>attaque</code></td><td><code>1</code></td><td>Zone d'impact d'une frappe</td></tr>
+            <tr><td><code>blocage</code></td><td><code>2</code></td><td>Zone de bouclier actif</td></tr>
+            <tr><td><code>saisie</code></td><td><code>3</code></td><td>Zone de prise / throw</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_hitbox_capsule</code></td>
+              <td><code>flɛ3d_hitbox_capsule(nom, type, sx, sy, sz, ex, ey, ez, rayon) → kɛn</code></td>
+              <td>Crée une hitbox capsule entre <code>start</code> et <code>end</code>.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_sphere</code></td>
+              <td><code>flɛ3d_hitbox_sphere(nom, type, x, y, z, rayon) → kɛn</code></td>
+              <td>Crée une hitbox sphérique.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_damage</code></td>
+              <td><code>flɛ3d_hitbox_damage(id, dmg, kx, ky, kz, hitstun)</code></td>
+              <td>Définit les données de dégâts et de knockback pour une hitbox d'attaque.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_ɖiɖe</code></td>
+              <td><code>flɛ3d_hitbox_ɖiɖe(id, actif)</code></td>
+              <td>Active (<code>nugbo</code>) ou désactive (<code>nuvu</code>) une hitbox.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_sɔ</code></td>
+              <td><code>flɛ3d_hitbox_sɔ(id, x, y, z)</code></td>
+              <td>Déplace la hitbox dans le monde.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_reset</code></td>
+              <td><code>flɛ3d_hitbox_reset(id)</code></td>
+              <td>Réinitialise les victimes touchées (évite le double-hit par frame).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_check</code></td>
+              <td><code>flɛ3d_hitbox_check() → wemawlanxwlɛ</code></td>
+              <td>
+                Détecte toutes les collisions actives. Retourne un tableau de maps
+                <code>{"attaquant", "defenseur", "damage", "bloque"}</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_hitbox_sunsun</code></td>
+              <td><code>flɛ3d_hitbox_sunsun(id)</code></td>
+              <td>Supprime une hitbox.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Hurtbox corps (capsule debout)
+jo hurtbox = flɛ3d_hitbox_capsule("joueur", 0,
+    0.0, 0.1, 0.0,   // point bas
+    0.0, 1.7, 0.0,   // point haut
+    0.35)             // rayon
+
+// Hitbox poing droit (sphère)
+jo poing = flɛ3d_hitbox_sphere("joueur", 1, 0.8, 1.2, 0.0, 0.4)
+flɛ3d_hitbox_damage(poing, 25.0, 3.0, 2.5, 0.0, 12) // 25 dmg, knockback, 12fr hitstun
+
+// Activer pendant l'animation de frappe (frame 4 à 8)
+flɛ3d_hitbox_ɖiɖe(poing, nugbo)
+
+// Dans la boucle
+flɛ3d_hitbox_sɔ(poing, px + 0.8, py + 1.2, pz)
+
+jo hits = flɛ3d_hitbox_check()
+sin (jo h ɖo hits) {
+    xlɛf("Impact ! dmg=%d bloqué=%s\n", h["damage"], wekwin(h["bloque"]))
+}
+
+// Désactiver après le swing
+flɛ3d_hitbox_ɖiɖe(poing, nuvu)
+flɛ3d_hitbox_reset(poing)</code></pre>
+      </div>
+
+      <!-- ── Animation Blending ─────────────────────────────────────── -->
+      <h2>Animation Blending — State Machine</h2>
+      <p>
+        Machine à états d'animation avec fondus croisés automatiques entre les clips.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_sm_ɖɔ</code></td>
+              <td><code>flɛ3d_sm_ɖɔ() → kɛn</code></td>
+              <td>Crée une state machine d'animation.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_sm_etat</code></td>
+              <td><code>flɛ3d_sm_etat(sm, nom, clip, loop, fade)</code></td>
+              <td>
+                Enregistre un état. <code>loop</code> : boucle infinie (nugbo/nuvu).
+                <code>fade</code> : durée du fondu entrant (secondes).
+              </td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_sm_aller</code></td>
+              <td><code>flɛ3d_sm_aller(sm, nom)</code></td>
+              <td>Déclenche une transition vers l'état <code>nom</code>.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_sm_update</code></td>
+              <td><code>flɛ3d_sm_update(sm, dt)</code></td>
+              <td>Avance la simulation et le fondu croisé.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_sm_xa</code></td>
+              <td><code>flɛ3d_sm_xa(sm, piste) → kɛn</code></td>
+              <td>Lit la valeur interpolée d'une piste (ex. <code>"bras.ry"</code>).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_sm_etat_actuel</code></td>
+              <td><code>flɛ3d_sm_etat_actuel(sm) → wekwin</code></td>
+              <td>Retourne le nom de l'état actif.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo sm = flɛ3d_sm_ɖɔ()
+
+flɛ3d_sm_etat(sm, "idle",    clip_idle,   nugbo, 0.20)
+flɛ3d_sm_etat(sm, "marche",  clip_marche, nugbo, 0.15)
+flɛ3d_sm_etat(sm, "attaque", clip_atk,    nuvu,  0.05)
+
+// Transition selon la vitesse du joueur
+enyi (vitesse > 0.1) {
+    flɛ3d_sm_aller(sm, "marche")
+} alo {
+    flɛ3d_sm_aller(sm, "idle")
+}
+
+// Dans la boucle
+flɛ3d_sm_update(sm, dt)
+
+jo etat = flɛ3d_sm_etat_actuel(sm)
+xlɛ("État actuel :", etat)</code></pre>
+      </div>
+
+      <!-- ── Effets Écran ────────────────────────────────────────────── -->
+      <h2>Effets Écran — Feedback de combat</h2>
+      <p>
+        Flashes colorés et camera shake pour renforcer le ressenti des impacts.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Builtin</th><th>Signature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>flɛ3d_eclair_blanc</code></td>
+              <td><code>flɛ3d_eclair_blanc(frames)</code></td>
+              <td>Flash blanc (coup reçu, éblouissement).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_eclair_rouge</code></td>
+              <td><code>flɛ3d_eclair_rouge(frames)</code></td>
+              <td>Flash rouge (dégâts importants, danger).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_eclair_jaune</code></td>
+              <td><code>flɛ3d_eclair_jaune(frames)</code></td>
+              <td>Flash jaune (coup porté sur l'ennemi).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_eclair</code></td>
+              <td><code>flɛ3d_eclair(r, g, b, alpha, frames)</code></td>
+              <td>Flash couleur personnalisé. Couleurs en 0–1.</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_xoxo3d_coup</code></td>
+              <td><code>flɛ3d_xoxo3d_coup()</code></td>
+              <td>Camera shake preset (impact standard).</td>
+            </tr>
+            <tr>
+              <td><code>flɛ3d_xoxo3d</code></td>
+              <td><code>flɛ3d_xoxo3d(dx, dy, dz, intensite, frames)</code></td>
+              <td>Camera shake personnalisé — direction, intensité et durée en frames.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Coup porté sur l'ennemi
+flɛ3d_eclair_jaune(2)
+flɛ3d_xoxo3d_coup()
+
+// Dégât critique reçu
+flɛ3d_eclair_rouge(5)
+flɛ3d_xoxo3d(1.0, 0.5, 0.0, 0.2, 10)
+
+// Flash bleu personnalisé (effet magie)
+flɛ3d_eclair(0.0, 0.5, 1.0, 0.4, 4)</code></pre>
+      </div>
+
+      <!-- ── Exemple complet ──────────────────────────────────────────── -->
+      <h2>Exemple complet — personnage PS2</h2>
+      <p>
+        Toutes les fonctionnalités Phase 3.5 réunies : animation squelettique, ombre au sol,
+        toon shading et bloom.
+      </p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>hun_flɛtɛli("Béhanzin — PS2 Quality", 960, 600)
+
+// Caméra
+jo cam = hun_nukún()
+nukún_position(cam, v3(0.0, 3.0, 8.0))
+nukún_cible(cam, v3(0.0, 1.0, 0.0))
+
+// Modèle avec squelette
+jo model   = flɛ3d_glb_skinned("behanzin.glb")
+jo mesh_id = model["meshes"][0]
+jo skel_id = model["skel_id"]
+
+// Lumière + éclairage
+flɛ3d_ambiant(0.08, 0.08, 0.12)
+flɛ3d_lumiere(v3(-0.5, -1.0, -0.3), 1.0, 0.95, 0.85)
+
+// Effets God Hand
+flɛ3d_toon_preset_godhand()
+flɛ3d_postfx_godhand()
+flɛ3d_ombre_ɖɔ(512)
+flɛ3d_ombre_lumiere(-0.5, -1.0, -0.3,  0.0, 0.0, 0.0,  8.0)
+
+jo t = 0.0
+
+flɛ_boucle(
+    azɔwanu(dt) {
+        t = t + dt
+
+        // Animer la hanche (rotation Y)
+        flɛ3d_skel_pose(skel_id, 0,
+            mat4_trs(v3(0,0,0), quat_euler(0, t * 0.5, 0), v3(1,1,1)))
+        flɛ3d_skel_update(skel_id)
+
+        // Shadow pass
+        flɛ3d_ombre_rendu(mesh_id, "behanzin")
+        flɛ3d_ombre_sol(mesh_id, "behanzin", -0.5, -1.0, -0.3,  0.0,  cam)
+
+        // Rendu principal
+        flɛ3d_effacer(0.05, 0.05, 0.10)
+        flɛ3d_skel_kpo(mesh_id, skel_id, "behanzin", cam, 1.0, 0.9, 0.8)
+        flɛ3d_rendu(cam)
+    },
+    azɔwanu() { }
+)</code></pre>
+      </div>
+
+      <div class="page-nav">
+        <a href="stdlib.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Stdlib — référence</span></a>
+        <a href="../examples/index.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Exemples</span></a>
+      </div>
+    </article>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../assets/main.js"></script>
+<script>renderSidebar('../');</script>
+</body>
+</html>
