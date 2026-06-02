@@ -126,6 +126,64 @@ jo doubles = appliquer(nums, azɔwanu(x) { lɛkɔ x * 2 })
 xlɛ(doubles)   // [2, 4, 6, 8, 10]</code></pre>
       </div>
 
+      <h2>Génériques — <code>azɔwanu&lt;T&gt;</code></h2>
+      <p>FonLang supporte les fonctions génériques par type erasure. Le paramètre de type
+      est ignoré à l'exécution (le langage est dynamique) mais documente l'intention et
+      permet une vérification statique de base par l'analyseur sémantique.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>// Identité générique
+azɔwanu identite&lt;T&gt;(x: T): T {
+    lɛkɔ x
+}
+
+// Premier élément d'un tableau
+azɔwanu premier&lt;T&gt;(arr: wemawlanxwlɛ): T {
+    lɛkɔ arr[0]
+}
+
+// Paire générique avec deux types
+azɔwanu paire&lt;A, B&gt;(a: A, b: B) {
+    lɛkɔ [a, b]
+}
+
+xlɛ(identite(42))             // 42
+xlɛ(identite("Bonjour Fon")) // "Bonjour Fon"
+xlɛ(premier([10, 20, 30]))    // 10
+xlɛ(paire("score", 500))      // ["score", 500]</code></pre>
+      </div>
+
+      <h2>Async / Await — <code>ayihun</code> / <code>yɔ</code></h2>
+      <p><code>ayihun</code> lance une expression dans une goroutine et retourne un <em>Future</em>.
+      <code>yɔ</code> bloque jusqu'à ce que le Future soit résolu.</p>
+
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>azɔwanu fetch(url) {
+    lɛkɔ http_get(url)   // requête réseau
+}
+
+// Lancer deux requêtes en parallèle
+jo f1 = ayihun fetch("api.fon/joueurs")
+jo f2 = ayihun fetch("api.fon/scores")
+
+xlɛ("En attente...")
+
+// Attendre les résultats (bloquant)
+jo joueurs = yɔ f1
+jo scores  = yɔ f2
+
+xlɛ(joueurs)
+xlɛ(scores)</code></pre>
+      </div>
+
+      <div class="info-box">
+        <strong>Compatibilité avec ??</strong><br>
+        Combinez <code>ayihun</code> et <code>??</code> pour des valeurs par défaut :<br>
+        <code>jo config = (yɔ charger_async("cfg.json")) ?? {"fps": 60}</code>
+      </div>
+
       <div class="page-nav">
         <a href="controle.html"><span class="nav-dir">&larr; Précédent</span><span class="nav-title">Structures de contrôle</span></a>
         <a href="collections.html" class="next"><span class="nav-dir">Suivant &rarr;</span><span class="nav-title">Collections</span></a>

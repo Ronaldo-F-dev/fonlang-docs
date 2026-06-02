@@ -34,8 +34,23 @@
         <div class="code-block-header"><span class="code-lang">bash</span><button class="code-copy">Copier</button></div>
         <pre><code class="language-bash">git clone https://github.com/fonlang/fonlang
 cd fonlang
-go build -o fonlang ./cmd/fonlang</code></pre>
+make all        # compile fonlang + fonlang-lsp + fonlang-dap
+# ou manuellement :
+go build -o fonlang     ./cmd/fonlang
+go build -o fonlang-lsp ./cmd/fonlang-lsp
+go build -o fonlang-dap ./cmd/fonlang-dap</code></pre>
       </div>
+
+      <h3>Extension VS Code</h3>
+      <p>L'extension FonLang pour VS Code (v0.4.0) intègre :</p>
+      <ul>
+        <li><strong>Syntax highlighting</strong> — mots-clés, strings, opérateurs</li>
+        <li><strong>LSP</strong> — autocomplétion, hover, go-to-definition, diagnostics en temps réel (via <code>fonlang-lsp</code>)</li>
+        <li><strong>DAP</strong> — debugger pas-à-pas : breakpoints, step-over, inspection de variables (via <code>fonlang-dap</code>)</li>
+        <li><strong>Commandes</strong> — exécuter, compiler, WASM, formater, tester depuis l'éditeur</li>
+        <li><strong>Snippets</strong> — async, génériques, pattern matching, savestate, etc.</li>
+      </ul>
+      <p>Installez <code>fonlang-lsp</code> et <code>fonlang-dap</code> dans votre PATH, puis installez l'extension <code>.vsix</code>.</p>
 
       <h2>Premier programme</h2>
       <p>Créez un fichier <code>bonjour.fon</code> :</p>

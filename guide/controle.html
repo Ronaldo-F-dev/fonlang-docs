@@ -118,20 +118,56 @@ blo {
 
       <!-- SWITCH -->
       <h2>Switch — <span class="kw">bɔdewu</span></h2>
-      <p><strong>bɔdewu</strong> signifie « selon » en Fon. À l'intérieur, <code>enyi</code> introduit chaque cas et <code>alo</code> le cas par défaut.</p>
+      <p><strong>bɔdewu</strong> signifie « selon » en Fon. FonLang supporte quatre formes de patterns :</p>
+
+      <h3>Valeur simple</h3>
       <div class="code-block">
         <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
-        <pre><code>azɔwanu nomJour(n) {
-    bɔdewu (n) {
-        enyi 1 { lɛkɔ "Lundi" }
-        enyi 2 { lɛkɔ "Mardi" }
-        enyi 3 { lɛkɔ "Mercredi" }
-        enyi 4 { lɛkɔ "Jeudi" }
-        enyi 5 { lɛkɔ "Vendredi" }
-        alo    { lɛkɔ "Week-end" }
+        <pre><code>bɔdewu (n) {
+    enyi 1 { lɛkɔ "Lundi" }
+    enyi 2 { lɛkɔ "Mardi" }
+    alo    { lɛkɔ "Week-end" }
+}</code></pre>
+      </div>
+
+      <h3>Déstructuration tableau</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo point = [10, 20]
+bɔdewu (point) {
+    enyi [x, y] {
+        xlɛ("x =", x, "y =", y)
     }
+}</code></pre>
+      </div>
+
+      <h3>Déstructuration map</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo joueur = {"vie": 3, "score": 1500}
+bɔdewu (joueur) {
+    enyi {vie, score} {
+        xlɛ("Vies:", vie, "— Score:", score)
+    }
+}</code></pre>
+      </div>
+
+      <h3>Garde (condition supplémentaire)</h3>
+      <div class="code-block">
+        <div class="code-block-header"><span class="code-lang">fon</span><button class="code-copy">Copier</button></div>
+        <pre><code>jo n = 42
+bɔdewu (n) {
+    enyi n enyi (n > 100) { xlɛ("grand") }
+    enyi n enyi (n > 0)   { xlɛ("positif") }
+    alo                   { xlɛ("nul ou négatif") }
 }
-xlɛ(nomJour(3))   // Mercredi</code></pre>
+
+// Combinaison : déstructuration + garde
+bɔdewu (point) {
+    enyi [x, y] enyi (x == 0 kpodo y == 0) { xlɛ("Origine") }
+    enyi [x, y] enyi (x == 0)               { xlɛ("Axe Y") }
+    enyi [x, y]                              { xlɛ("Général:", x, y) }
+}</code></pre>
       </div>
 
       <!-- BREAK/CONTINUE -->
